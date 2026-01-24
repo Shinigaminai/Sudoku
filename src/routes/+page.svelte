@@ -35,10 +35,5 @@
 		</label>
 	</div>
 
-	<button
-		class="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
-		on:click={handleGenerate}
-	>
-		Generate Sudoku
-	</button>
+	<button class="btn" on:click={handleGenerate}> Generate Sudoku </button>
 </div>

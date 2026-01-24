@@ -12,29 +12,38 @@
 	const puzzleGrid: SudokuGrid = decodePuzzle(solutionHex, initMaskHex);
 </script>
 
-<div class="mt-8 flex flex-col items-center space-y-4">
-	<!-- Sudoku grid -->
-	<PuzzleGrid {puzzleGrid} />
+<div class="page">
+	<div class="controls">
+		<a href="/" class="btn btn--primary">Home</a>
+		<button class="btn btn--secondary">Share</button>
+		<button class="btn btn--negative">Solve</button>
+	</div>
 
-	<!-- Controls -->
-	<div class="mt-4 flex gap-4">
-		<button class="rounded bg-blue-500 px-4 py-2 text-white" on:click={() => alert('Solve!')}>
-			Solve
-		</button>
-		<button
-			class="rounded bg-green-500 px-4 py-2 text-white"
-			on:click={() => navigator.clipboard.writeText(window.location.href)}
-		>
-			Share
-		</button>
-		<a href="/" class="rounded bg-gray-500 px-4 py-2 text-white">Home</a>
+	<div class="content">
+		<PuzzleGrid {puzzleGrid} />
 	</div>
 </div>
 
 <style>
-	/* Optional: basic centering and spacing */
-	.grid-container {
-		display: grid;
-		gap: 0.5rem;
+	.page {
+		display: flex;
+		flex-direction: column;
+		height: 100%; /* take all available space from body */
+	}
+
+	.controls {
+		padding: 1rem;
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+	}
+
+	.content {
+		flex: 1; /* take remaining space */
+		min-height: 0; /* allow shrinking in flex context */
+		display: flex;
+		align-items: center; /* vertical centering if space allows */
+		justify-content: center; /* horizontal centering */
+		padding: 1em;
 	}
 </style>

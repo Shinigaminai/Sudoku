@@ -1,1 +1,74 @@
 @import 'tailwindcss';
+@import '../app.css';
+
+:root {
+    /* Base */
+    --bg: #f5f3eb;
+    /* warm beige background */
+    --text: #111827;
+    /* near-black text */
+    --text-muted: #6b7280;
+    /* secondary text */
+
+    /* Surfaces */
+    --surface: #ffffff;
+    /* cards, panels */
+    --surface-alt: #f1f5f9;
+    /* subtle contrast surface */
+    --border: #e5e7eb;
+
+    /* Brand / Primary */
+    --primary: #4f8cff;
+    --primary-hover: #5fa0ff;
+    --primary-active: #2f6bd8;
+
+    /* Secondary */
+    --secondary: #b38bff;
+    --secondary-hover: #c4a4ff;
+    --secondary-active: #6d4bd8;
+
+    /* Success */
+    --success: #22c55e;
+    --success-bg: #dcfce7;
+
+    /* Warning */
+    --warning: #f59e0b;
+    --warning-bg: #fef3c7;
+
+    /* Error */
+    --error: #ef4444;
+    --error-bg: #fee2e2;
+
+    /* Info */
+    --info: #0ea5e9;
+    --info-bg: #e0f2fe;
+
+    /* Disabled */
+    --disabled: #9ca3af;
+    --disabled-bg: #e5e7eb;
+
+    /* Shadows */
+    --shadow-height: 6px;
+    --box-shadow:
+        0 var(--shadow-height) 0 rgba(0, 0, 0, 0.28),
+        0 12px 24px rgba(0, 0, 0, 0.25);
+    --box-shadow-active:
+        0 0 0 rgba(0, 0, 0, 0.35),
+        0 4px 10px rgba(0, 0, 0, 0.25);
+
+    /* Focus */
+    --focus-ring: 0 0 0 3px rgba(79, 140, 255, 0.4);
+
+    --filter-active: brightness(0.98);
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+    display: flow-root;
+}
