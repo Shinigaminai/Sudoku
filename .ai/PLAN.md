@@ -85,9 +85,9 @@ Tasks are ordered to support iterative development and effective collaboration w
 
 ### 8. App State Management
 
-* [ ] Separate UI state from puzzle logic
-* [ ] Ensure puzzle generation logic lives outside Svelte components
-* [ ] Write lightweight component tests
+* [x] Separate UI state from puzzle logic
+* [x] Ensure puzzle generation logic lives outside Svelte components
+* [x] Write lightweight component tests
 
 **Goal:** Maintain clear logic/UI separation.
 
