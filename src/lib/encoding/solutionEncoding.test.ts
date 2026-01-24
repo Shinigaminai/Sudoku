@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   encodeSolutionDigitsToHex,
   decodeSolutionHex,
-} from "../solutionEncoding";
+} from "./solutionEncoding";
 
 describe("solution encoding", () => {
   it("round-trips solution digits correctly", () => {

@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   encodeInitMaskToHex,
   decodeInitMaskHex,
-} from "../initMaskEncoding";
+} from "./initMaskEncoding";
 
 describe("initial mask encoding", () => {
   it("round-trips boolean mask correctly", () => {
