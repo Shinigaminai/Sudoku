@@ -47,3 +47,22 @@ export function decodePuzzle(
     })
   ) as SudokuGrid;
 }
+
+/**
+ * Checks if a string is a valid puzzle encoding.
+ * Valid format: "{solutionHex}-{initMaskHex}"
+ * Both parts must be valid hex strings.
+ */
+export function isPuzzleEncoding(value: string): boolean {
+  if (typeof value !== 'string') return false;
+
+  const parts = value.split('-');
+  if (parts.length !== 2) return false;
+
+  const [solutionHex, initMaskHex] = parts;
+
+  // Hex regex: one or more 0-9, a-f, A-F
+  const hexRegex = /^[0-9a-fA-F]+$/;
+
+  return hexRegex.test(solutionHex) && hexRegex.test(initMaskHex);
+}
