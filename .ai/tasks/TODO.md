@@ -1,0 +1,1 @@
+Check if createPuzzle() seed and initMaskHex serve the same purpose, compare and simplify if possible.
