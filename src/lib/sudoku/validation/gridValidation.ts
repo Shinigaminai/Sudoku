@@ -1,12 +1,12 @@
-import type { SudokuCell, SudokuGrid } from "$lib/types";
+import type { SudokuGrid, SudokuValue } from "$lib/sudoku/types";
 
 /**
- * Validates that an array of 9 Sudoku values contains no duplicates (ignoring nulls)
+ * Validates that an array of 9 Sudoku values contains no duplicates (ignoring 0s)
  */
-export function isValidGroup(values: (number | null)[]): boolean {
+export function isValidGroup(values: SudokuValue[]): boolean {
   const seen = new Set<number>();
   for (const val of values) {
-    if (val !== null) {
+    if (val !== 0) {
       if (seen.has(val)) return false;
       seen.add(val);
     }
@@ -36,7 +36,7 @@ export function validateColumns(grid: SudokuGrid): boolean {
  * Validate a single 3x3 box given its top-left coordinates
  */
 export function validateBox(grid: SudokuGrid, startRow: number, startCol: number): boolean {
-  const values: (number | null)[] = [];
+  const values: SudokuValue[] = [];
   for (let r = startRow; r < startRow + 3; r++) {
     for (let c = startCol; c < startCol + 3; c++) {
       values.push(grid[r][c].value);

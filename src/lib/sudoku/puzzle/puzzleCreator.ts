@@ -1,13 +1,14 @@
-import type { SudokuGrid, Difficulty } from "$lib/types";
+import { type SudokuGrid, type Difficulty, EmptyCellValue } from "$lib/sudoku/types";
 import { cloneGrid } from "../utils/gridUtils";
 import { createSeededRng } from "../generator/seededRng";
 import { shuffle } from "../generator/shuffle";
 
 const DifficultyPrefillMap: Record<Difficulty, number> = {
+  solved: 81,
   easy: 45,
   medium: 36,
   hard: 27,
-  expert: 18, // or whatever prefill count you want
+  expert: 18,
 };
 
 /**
@@ -15,7 +16,7 @@ const DifficultyPrefillMap: Record<Difficulty, number> = {
  *
  * @param solvedGrid Fully solved grid
  * @param seed Numeric seed for deterministic removal
- * @param difficulty "easy" | "medium" | "hard"
+ * @param difficulty {@link Difficulty} Difficulty level of the puzzle
  */
 export function createPuzzle(
   solvedGrid: SudokuGrid,
@@ -40,7 +41,7 @@ export function createPuzzle(
     const row = Math.floor(idx / 9);
     const col = idx % 9;
 
-    grid[row][col].value = null;
+    grid[row][col].value = EmptyCellValue;
     grid[row][col].fixed = false;
   }
 

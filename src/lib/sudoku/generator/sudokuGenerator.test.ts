@@ -3,8 +3,11 @@ import { generateSolvedGrid } from "./sudokuGenerator";
 import { validateGrid } from "../validation/gridValidation";
 import { cloneGrid } from "../utils/gridUtils";
 import { solveSudoku } from "../solver/sudokuSolver";
+import { EmptyCellValue, type SudokuValue } from "../types";
 
 describe("Sudoku Generator", () => {
+  const seeds = [42, 99, 999, 7, 12345, 0];
+
   it("generates a valid completed grid", () => {
     const grid = generateSolvedGrid(42);
 
@@ -33,4 +36,12 @@ describe("Sudoku Generator", () => {
     expect(result.isSolvable).toBe(true);
     expect(result.solvedGrid).toEqual(grid);
   });
+
+  seeds.forEach((seed) => {
+    it("produces solved puzzle without EmptyCellValue", () => {
+      const solved = generateSolvedGrid(seed);
+      const allValues: SudokuValue[] = solved.flat().map((cell) => cell.value);
+      expect(allValues).not.toContain(EmptyCellValue);
+    });
+  })
 });

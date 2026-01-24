@@ -7,7 +7,7 @@ import {
   validateGrid,
 } from "./gridValidation";
 
-import type { SudokuCell, SudokuGrid, SudokuValue } from "$lib/types";
+import type { SudokuCell, SudokuGrid, SudokuValue } from "$lib/sudoku/types";
 
 // Helper to create a cell
 const cell = (value: SudokuValue, fixed = false): SudokuCell => ({ value, fixed });
@@ -59,11 +59,5 @@ describe("Sudoku grid validation", () => {
     invalid[0][0].value = invalid[1][1].value; // duplicate in top-left box
     expect(validateBoxes(invalid)).toBe(false);
     expect(validateGrid(invalid)).toBe(false);
-  });
-
-  it("allows nulls in a group", () => {
-    const withNulls = solvedGrid;
-    withNulls[0][0].value = null;
-    expect(isValidGroup(withNulls[0].map((c) => c.value))).toBe(true);
   });
 });

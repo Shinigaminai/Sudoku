@@ -1,4 +1,4 @@
-import type { SudokuCell, SudokuGrid, SudokuValue } from "$lib/types";
+import { EmptyCellValue, type SudokuCell, type SudokuGrid, type SudokuValue } from "$lib/sudoku/types";
 
 /* ------------------------------------------------------------------ */
 /* Cell helpers */
@@ -37,7 +37,7 @@ export const createSolvedGrid = (): SudokuGrid => [
  */
 export const createEmptyGrid = (): SudokuGrid =>
   Array.from({ length: 9 }, () =>
-    Array.from({ length: 9 }, () => createCell(null))
+    Array.from({ length: 9 }, () => createCell(0))
   ) as unknown as SudokuGrid;
 
 /* ------------------------------------------------------------------ */
@@ -84,3 +84,11 @@ export function printGrid(grid: SudokuGrid): void {
   console.log(lines.join("\n"));
 }
 
+/**
+ * Check that a Sudoku grid contains no empty cells (0 values).
+ * @param grid The Sudoku grid to check
+ * @returns true if all cells are filled with 1–9, false if any cell is 0
+ */
+export function hasNoEmptyCell(grid: SudokuGrid): boolean {
+  return grid.every((row) => row.every((cell) => cell.value !== EmptyCellValue));
+}

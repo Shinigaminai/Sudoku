@@ -1,5 +1,5 @@
-import type { SudokuGrid, SudokuCell, SudokuValue } from "$lib/types";
-import { cloneGrid, createEmptyGrid, createCell } from "../utils/gridUtils";
+import { EmptyCellValue, type SudokuGrid, type SudokuValue } from "$lib/sudoku/types";
+import { createEmptyGrid, hasNoEmptyCell } from "../utils/gridUtils";
 import { createSeededRng, type SeededRng } from "./seededRng";
 import { shuffle } from "./shuffle";
 import { validateGrid } from "../validation/gridValidation";
@@ -22,7 +22,7 @@ function fillBox(grid: SudokuGrid, startRow: number, startCol: number, rng: Seed
 function findEmptyCell(grid: SudokuGrid): [number, number] | null {
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
-      if (grid[r][c].value === null) return [r, c];
+      if (grid[r][c].value === EmptyCellValue) return [r, c];
     }
   }
   return null;
@@ -42,7 +42,7 @@ function fillRemaining(grid: SudokuGrid, rng: SeededRng): boolean {
     if (validateGrid(grid)) {
       if (fillRemaining(grid, rng)) return true;
     }
-    grid[row][col].value = null; // backtrack
+    grid[row][col].value = 0; // backtrack
   }
 
   return false; // no valid number fits
@@ -66,12 +66,11 @@ export function generateSolvedGrid(seed: number): SudokuGrid {
     throw new Error("Failed to generate a Sudoku grid. This should never happen.");
   }
 
-  // Mark all cells as fixed
-  for (let r = 0; r < 9; r++) {
-    for (let c = 0; c < 9; c++) {
-      grid[r][c].fixed = true;
-    }
+  // Mark all cells as fixed and replace any remaining 0s (just in case)
+  if(!hasNoEmptyCell(grid)) {
+    throw new Error(`generateSolvedGrid contains an EmptyCellValue`);
   }
 
   return grid;
 }
+

@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { generateSolvedGrid } from "../generator/sudokuGenerator";
 import { createPuzzle } from "./puzzleCreator";
 import { validateGrid } from "../validation/gridValidation";
+import { EmptyCellValue, type SudokuValue } from "../types";
 
 describe("Puzzle Creation", () => {
   it("creates puzzles with correct number of prefilled cells per difficulty", () => {
@@ -16,7 +17,7 @@ describe("Puzzle Creation", () => {
 
     for (const [level, prefilled] of Object.entries(difficulties)) {
       const puzzle = createPuzzle(solved, 123, level as any);
-      const count = puzzle.flat().filter(c => c.value !== null).length;
+      const count = puzzle.flat().filter(c => c.value !== EmptyCellValue).length;
       expect(count).toBe(prefilled);
     }
   });
@@ -45,7 +46,7 @@ describe("Puzzle Creation", () => {
 
     for (let r = 0; r < 9; r++) {
       for (let c = 0; c < 9; c++) {
-        if (puzzle[r][c].value !== null) {
+        if (puzzle[r][c].value !== EmptyCellValue) {
           expect(puzzle[r][c].value).toBe(solved[r][c].value);
         }
       }

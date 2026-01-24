@@ -1,114 +1,83 @@
-import type { SudokuGrid, SudokuCell, SudokuValue } from "$lib/types";
+import type { SudokuGrid, SudokuCell, SudokuValue } from "$lib/sudoku/types";
 import { validateGrid } from "../validation/gridValidation";
-
-/* ------------------------------------------------------------------ */
-/* Types */
-/* ------------------------------------------------------------------ */
 
 export interface SolverResult {
   solvedGrid?: SudokuGrid;
   isSolvable: boolean;
 }
 
-/* ------------------------------------------------------------------ */
-/* Helpers */
-/* ------------------------------------------------------------------ */
-
-// Deep clone to avoid mutating input
-const cloneGrid = (grid: SudokuGrid): SudokuGrid =>
-  grid.map(row => row.map(cell => ({ ...cell }))) as unknown as SudokuGrid;
-
-// Find the first empty cell (row-major order)
-const findEmptyCell = (
-  grid: SudokuGrid
-): { row: number; col: number } | null => {
-  for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-      if (grid[row][col].value === null) {
-        return { row, col };
-      }
-    }
-  }
-  return null;
-};
-
-// Try values 1–9
-const CANDIDATES: SudokuValue[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-/* ------------------------------------------------------------------ */
-/* Core Backtracking Solver */
-/* ------------------------------------------------------------------ */
-
-const solveInternal = (
-  grid: SudokuGrid,
-  solutions: SudokuGrid[],
-  stopAfter: number
-): void => {
-  if (solutions.length >= stopAfter) return;
-
-  const empty = findEmptyCell(grid);
-  if (!empty) {
-    // Found a complete solution
-    solutions.push(cloneGrid(grid));
-    return;
-  }
-
-  const { row, col } = empty;
-
-  for (const value of CANDIDATES) {
-    grid[row][col].value = value;
-
-    if (validateGrid(grid)) {
-      solveInternal(grid, solutions, stopAfter);
-    }
-
-    if (solutions.length >= stopAfter) return;
-  }
-
-  // Backtrack
-  grid[row][col].value = null;
-};
-
-/* ------------------------------------------------------------------ */
-/* Public API */
-/* ------------------------------------------------------------------ */
-
 /**
- * Solves a Sudoku puzzle.
- * Returns the first found solution, if any.
+ * Solve a Sudoku grid using backtracking.
+ * Returns:
+ *   - isSolvable: true if a solution exists
+ *   - solvedGrid: the filled grid if solvable, otherwise undefined
  */
-export function solveSudoku(grid: SudokuGrid): SolverResult {
+export function solveSudoku(grid: SudokuGrid): { isSolvable: boolean; solvedGrid?: SudokuGrid } {
+  // Check if starting grid is valid
   if (!validateGrid(grid)) {
     return { isSolvable: false };
   }
 
-  const workingGrid = cloneGrid(grid);
-  const solutions: SudokuGrid[] = [];
+  // Clone the grid to avoid mutating original
+  const g: SudokuGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
 
-  solveInternal(workingGrid, solutions, 1);
+  function backtrack(r = 0, c = 0): boolean {
+    if (r === 9) return true; // solved
 
-  if (solutions.length === 0) {
-    return { isSolvable: false };
+    const [nextR, nextC] = c === 8 ? [r + 1, 0] : [r, c + 1];
+
+    if (g[r][c].value !== 0) return backtrack(nextR, nextC);
+
+    for (let num = 1 as SudokuValue; num <= 9; num++) {
+      g[r][c].value = num;
+      if (validateGrid(g)) {
+        if (backtrack(nextR, nextC)) return true;
+      }
+      g[r][c].value = 0; // backtrack
+    }
+
+    return false;
   }
 
-  return {
-    isSolvable: true,
-    solvedGrid: solutions[0],
-  };
+  const isSolvable = backtrack();
+  return { isSolvable, solvedGrid: isSolvable ? g : undefined };
 }
 
 /**
  * Checks whether a Sudoku puzzle has exactly one solution.
  */
+/**
+ * Check if a grid has a unique solution.
+ * Treats 0 as empty.
+ */
 export function hasUniqueSolution(grid: SudokuGrid): boolean {
-  if (!validateGrid(grid)) {
+  if (!validateGrid(grid)) return false;
+
+  let solutionCount = 0;
+
+  function solve(g: SudokuGrid, r = 0, c = 0): boolean {
+    if (r === 9) {
+      solutionCount++;
+      return solutionCount > 1; // stop if more than one solution found
+    }
+
+    const [nextR, nextC] = c === 8 ? [r + 1, 0] : [r, c + 1];
+
+    if (g[r][c].value !== 0) {
+      return solve(g, nextR, nextC);
+    }
+
+    for (let num = 1 as SudokuValue; num <= 9; num++) {
+      g[r][c].value = num;
+      if (validateGrid(g)) {
+        if (solve(g, nextR, nextC)) return true;
+      }
+      g[r][c].value = 0; // backtrack
+    }
+
     return false;
   }
 
-  const workingGrid = cloneGrid(grid);
-  const solutions: SudokuGrid[] = [];
-
-  solveInternal(workingGrid, solutions, 2);
-
-  return solutions.length === 1;
+  solve(JSON.parse(JSON.stringify(grid))); // deep clone to avoid mutation
+  return solutionCount === 1;
 }

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { solveSudoku, hasUniqueSolution } from "./sudokuSolver";
-import type { SudokuGrid, SudokuCell } from "$lib/types";
+import type { SudokuGrid, SudokuCell } from "$lib/sudoku/types";
 import { createEmptyGrid, createSolvedGrid } from "../utils/gridUtils";
 
 /* ------------------------------------------------------------------ */
@@ -31,9 +31,9 @@ describe("Sudoku Solver", () => {
 
   it("solves a partially filled grid", () => {
     const grid = cloneGrid(solvedGrid);
-    grid[0][0].value = null;
-    grid[4][4].value = null;
-    grid[8][8].value = null;
+    grid[0][0].value = 0;
+    grid[4][4].value = 0;
+    grid[8][8].value = 0;
 
     const result = solveSudoku(grid);
 
@@ -64,8 +64,8 @@ describe("Sudoku Solver", () => {
 
   it("detects a unique solution", () => {
     const grid = cloneGrid(solvedGrid);
-    grid[0][0].value = null;
-    grid[1][1].value = null;
+    grid[0][0].value = 0;
+    grid[1][1].value = 0;
 
     expect(hasUniqueSolution(grid)).toBe(true);
   });
