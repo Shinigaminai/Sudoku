@@ -61,5 +61,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex: 1 0;
 	}
 </style>

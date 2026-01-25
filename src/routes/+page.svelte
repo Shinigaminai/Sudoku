@@ -26,9 +26,9 @@
 <div class="mt-12 flex flex-col items-center space-y-6">
 	<h1 class="text-3xl font-bold">Sudoku Generator</h1>
 
-	<div class="flex flex-col space-y-2">
+	<div class="grid grid-cols-2 items-baseline gap-4">
 		<label>
-			Difficulty:
+			<div class="label-settings">Difficulty:</div>
 			<ArrowSelect
 				options={difficulties}
 				value={difficulty}
@@ -38,10 +38,16 @@
 		</label>
 
 		<label>
-			Seed (optional):
+			<div class="label-settings">Seed (optional):</div>
 			<input type="number" bind:value={seed} class="rounded border px-2 py-1" />
 		</label>
 	</div>
 
 	<button class="btn" onclick={handleGenerate}> Generate Sudoku </button>
 </div>
+
+<style>
+	label {
+		display: contents;
+	}
+</style>
