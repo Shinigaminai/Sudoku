@@ -1,18 +1,25 @@
 .btn {
+    padding: 0 1.75rem;
+}
+
+.arrow-select,
+.btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
     min-height: 3.5rem;
-    padding: 0 1.75rem;
 
     border-radius: 1rem;
     border: 0.2em solid var(--border);
+
+    margin-bottom: var(--shadow-height);
 
     font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 0.02em;
     color: white;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
 
     background-color: var(--btn-bg, var(--primary));
 
@@ -25,22 +32,38 @@
     transition:
         transform 0.08s ease,
         box-shadow 0.08s ease,
-        filter 0.15s ease;
+        filter 0.15s ease,
+		scale 0.3s ease;
+
+    overflow: hidden;
 }
 
+
+.arrow-select {
+    align-items: stretch;
+}
+
+.arrow-select > *,
+.btn > * {
+    align-self: stretch;
+}
+
+.arrow-select:hover:not(:disabled),
 .btn:hover:not(:disabled) {
     background-color: var(--btn-bg-hover, var(--primary-hover));
-    filter: brightness(1.08);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover)
 }
 
+.arrow-select:active:not(:disabled),
 .btn:active:not(:disabled) {
     background-color: var(--btn-bg-active, var(--primary-active));
     transform: translateY(var(--shadow-height));
     box-shadow: var(--box-shadow-active);
 }
 
-.btn:disabled {
-    opacity: 0.55;
+*:disabled {
+    /* opacity: 0.55; */
     cursor: not-allowed;
     filter: grayscale(0.6);
 }

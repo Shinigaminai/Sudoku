@@ -24,7 +24,7 @@
 
     /* Secondary */
     --secondary: #b38bff;
-    --secondary-hover: #c4a4ff;
+    --secondary-hover: #ba94ff;
     --secondary-active: #6d4bd8;
 
     /* Success */
@@ -50,11 +50,14 @@
     /* Shadows */
     --shadow-height: 6px;
     --box-shadow:
-        0 var(--shadow-height) 0 rgba(0, 0, 0, 0.28),
-        0 12px 24px rgba(0, 0, 0, 0.25);
+        0 var(--shadow-height) 0 lightgrey,
+        0 12px 24px rgba(0, 0, 0, 0.55);
+    --box-shadow-hover:
+        0 var(--shadow-height) 0 lightgrey,
+        0 14px 28px rgba(0, 0, 0, 0.50);
     --box-shadow-active:
-        0 0 0 rgba(0, 0, 0, 0.35),
-        0 4px 10px rgba(0, 0, 0, 0.25);
+        0 0 0 lightgrey,
+        0 4px 10px rgba(0, 0, 0, 0.60);
 
     /* Focus */
     --focus-ring: 0 0 0 3px rgba(79, 140, 255, 0.4);
