@@ -16,12 +16,35 @@
 	const solvePuzzle = () => {
 		showSolution = !showSolution;
 	};
+
+	const handleShareClicked = async () => {
+		const shareUrl = window.location.href;
+
+		// If Web Share API is available (mostly mobile)
+		if (navigator.share) {
+			navigator
+				.share({
+					title: document.title,
+					url: shareUrl
+				})
+				.catch(() => {});
+			console.log('opening system share menu');
+		} else {
+			navigator.clipboard
+				.writeText(shareUrl)
+				.then(() => alert('Link copied to clipboard!'))
+				.catch((err) => {
+					console.error('Clipboard copy failed:', err);
+					alert('Failed to copy link');
+				});
+		}
+	};
 </script>
 
 <div class="page">
 	<div class="controls">
 		<a href="/" class="btn btn--primary">Home</a>
-		<button class="btn btn--secondary">Share</button>
+		<button class="btn btn--secondary" onclick={handleShareClicked}>Share</button>
 		<button class="btn btn--negative" onclick={solvePuzzle}> Solve </button>
 	</div>
 
