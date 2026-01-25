@@ -20,12 +20,7 @@ describe("puzzle encoding / decoding", () => {
         const reconstructed = decoded[r][c];
 
         expect(reconstructed.fixed).toBe(original.fixed);
-
-        if (original.fixed) {
-          expect(reconstructed.value).toBe(original.value);
-        } else {
-          expect(reconstructed.value).toBe(0);
-        }
+        expect(reconstructed.value).toBe(original.value);
       }
     }
   });

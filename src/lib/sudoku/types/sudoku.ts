@@ -2,6 +2,7 @@
 export type SudokuValue = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export const EmptyCellValue = 0;
+export const FilledCellValues: SudokuValue[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 /** A single cell in the Sudoku grid */
 export interface SudokuCell {

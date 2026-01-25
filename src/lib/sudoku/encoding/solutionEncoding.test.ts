@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
-import type { SudokuCell, SudokuGrid, SudokuValue } from "$lib/sudoku/types";
+import { EmptyCellValue, FilledCellValues as SudokuValues, type SudokuCell, type SudokuGrid, type SudokuValue } from "$lib/sudoku/types";
 import { encodeSolutionGrid, decodeSolutionGrid } from "./solutionEncoding";
+import { createCell } from "../utils/gridUtils";
 
 describe("Solution Encoding with fixed mask", () => {
   const createTestGrid = (): SudokuGrid => {
@@ -46,18 +47,20 @@ describe("Solution Encoding with fixed mask", () => {
     expect(encoded2).toBe(encoded1);
   });
 
-  it("should handle a fully empty grid", () => {
-    const grid: SudokuGrid = Array.from({ length: 9 }, () =>
-      Array.from({ length: 9 }, () => ({ value: 0, fixed: false } as SudokuCell))
-    ) as unknown as SudokuGrid;
+  SudokuValues.forEach(cellValue => {
+    it(`should handle sudoku value ${cellValue}`, () => {
+      const grid: SudokuGrid = Array.from({ length: 9 }, () =>
+        Array.from({ length: 9 }, () => createCell(cellValue, false))
+      ) as unknown as SudokuGrid;
 
-    const encoded = encodeSolutionGrid(grid);
-    const decoded = decodeSolutionGrid(encoded);
+      const encoded = encodeSolutionGrid(grid);
+      const decoded = decodeSolutionGrid(encoded);
 
-    for (let r = 0; r < 9; r++) {
-      for (let c = 0; c < 9; c++) {
-        expect(decoded[r][c].value).toBe(0);
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          expect(decoded[r][c].value).toBe(cellValue);
+        }
       }
-    }
+    });
   });
 });

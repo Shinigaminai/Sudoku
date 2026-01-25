@@ -1,26 +1,32 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import PuzzleGrid from './components/PuzzleGrid.svelte';
-	import { decodePuzzle } from '$lib/sudoku/encoding/puzzleEncoding';
+	import { decodePuzzle, decodeSolutionGrid } from '$lib/sudoku';
 	import type { SudokuGrid } from '$lib/sudoku/types/sudoku';
 
-	// `data` comes from +page.ts load function
-	export let data: PageData;
+	const { data } = $props<{ data: PageData }>();
 
-	// Decode the puzzle directly — data.puzzle is guaranteed to exist and be valid
-	const [solutionHex, initMaskHex] = data.puzzle.split('-');
+	const puzzle = (() => data.puzzle)();
+
+	const [solutionHex, initMaskHex] = puzzle.split('-');
 	const puzzleGrid: SudokuGrid = decodePuzzle(solutionHex, initMaskHex);
+
+	let showSolution = $state(false);
+
+	const solvePuzzle = () => {
+		showSolution = !showSolution;
+	};
 </script>
 
 <div class="page">
 	<div class="controls">
 		<a href="/" class="btn btn--primary">Home</a>
 		<button class="btn btn--secondary">Share</button>
-		<button class="btn btn--negative">Solve</button>
+		<button class="btn btn--negative" onclick={solvePuzzle}> Solve </button>
 	</div>
 
 	<div class="content">
-		<PuzzleGrid {puzzleGrid} />
+		<PuzzleGrid {puzzleGrid} {showSolution} />
 	</div>
 </div>
 

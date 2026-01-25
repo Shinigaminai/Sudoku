@@ -3,7 +3,7 @@ import { cloneGrid } from "../utils/gridUtils";
 import { createSeededRng } from "../generator/seededRng";
 import { shuffle } from "../generator/shuffle";
 
-const DifficultyPrefillMap: Record<Difficulty, number> = {
+export const DifficultyPrefillMap: Record<Difficulty, number> = {
   solved: 81,
   easy: 45,
   medium: 36,
@@ -36,20 +36,21 @@ export function createPuzzle(
   // Number of cells to remove
   const cellsToRemove = 81 - prefillCount;
 
+  // Fix all cells
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      grid[r][c].fixed = true;
+    }
+  }
+
+  // Unfix some cells
   for (let i = 0; i < cellsToRemove; i++) {
     const idx = indices[i];
     const row = Math.floor(idx / 9);
     const col = idx % 9;
 
-    grid[row][col].value = EmptyCellValue;
+    // grid[row][col].value = EmptyCellValue;
     grid[row][col].fixed = false;
-  }
-
-  // Ensure remaining cells are fixed
-  for (let r = 0; r < 9; r++) {
-    for (let c = 0; c < 9; c++) {
-      if (grid[r][c].value !== null) grid[r][c].fixed = true;
-    }
   }
 
   return grid;

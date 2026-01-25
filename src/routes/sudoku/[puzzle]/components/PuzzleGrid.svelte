@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { SudokuGrid } from '$lib/sudoku/types';
 	export let puzzleGrid: SudokuGrid;
+	export let showSolution: boolean;
 </script>
 
 <div class="aspect-square h-full max-h-200 max-w-full contain-size">
@@ -8,7 +9,7 @@
 		{#each puzzleGrid as row, rowIndex}
 			{#each row as cell, colIndex}
 				<div class="cell" data-fixed={cell.fixed} data-row={rowIndex} data-col={colIndex}>
-					{cell.value !== 0 ? cell.value : ''}
+					{cell.fixed || showSolution ? cell.value : ''}
 				</div>
 			{/each}
 		{/each}

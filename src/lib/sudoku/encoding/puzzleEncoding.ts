@@ -1,4 +1,4 @@
-import type { SudokuCell, SudokuGrid, SudokuValue } from "$lib/sudoku/types";
+import { isSudokuValue, type SudokuCell, type SudokuGrid, type SudokuValue } from "$lib/sudoku/types";
 import { encodeSolutionGrid, decodeSolutionGrid } from "./solutionEncoding";
 import { encodeMask, decodeMask } from "./maskEncoding";
 import { createCell } from "../utils/gridUtils";
@@ -41,7 +41,11 @@ export function decodePuzzle(
   return solutionGrid.map((row: SudokuCell[], r) =>
     row.map((cell, c) => {
       const fixed = initMask[r][c];
-      const value: SudokuValue = fixed ? cell.value : 0;
+      const value: SudokuValue = cell.value;
+
+      if (!isSudokuValue(value)) {
+        throw new Error(`Invalid Sudoku value at row ${r}, col ${c}: ${value}`);
+      }
 
       return createCell(value, fixed);
     })
