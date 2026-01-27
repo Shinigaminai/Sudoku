@@ -1,25 +1,53 @@
 <script lang="ts">
 	import { EmptyCellValue, type SudokuGrid } from '$lib/sudoku/types';
+	import { onMount } from 'svelte';
 
 	export let puzzleGrid: SudokuGrid;
 	export let showSolution: boolean;
 
 	// User-entered values (0 = empty)
 	let userGrid: number[][] = Array.from({ length: 9 }, () => Array(9).fill(0));
-	let selectedCell = { row: -1, column: -1 };
+	let cellRefs: HTMLElement[][] = Array.from({ length: 9 }, () => Array(9));
 
 	function handleKeydown(e: KeyboardEvent, row: number, col: number) {
-		console.log(e.code);
+		const key = e.key;
 
-		const cell = puzzleGrid[row][col];
+		// ---- NAVIGATION ----
+		let nextRow = row;
+		let nextCol = col;
 
-		if (cell.fixed) return;
-
-		if (e.key >= '1' && e.key <= '9') {
-			userGrid[row][col] = Number(e.key);
+		switch (key) {
+			case 'ArrowUp':
+				nextRow = Math.max(0, row - 1);
+				break;
+			case 'ArrowDown':
+				nextRow = Math.min(8, row + 1);
+				break;
+			case 'ArrowLeft':
+				nextCol = Math.max(0, col - 1);
+				break;
+			case 'ArrowRight':
+				nextCol = Math.min(8, col + 1);
+				break;
+			default:
+				break;
 		}
 
-		if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') {
+		if (nextRow !== row || nextCol !== col) {
+			e.preventDefault();
+			cellRefs[nextRow][nextCol]?.focus();
+			return;
+		}
+
+		// ---- INPUT ----
+		const cell = puzzleGrid[row][col];
+		if (cell.fixed) return;
+
+		if (key >= '1' && key <= '9') {
+			userGrid[row][col] = Number(key);
+		}
+
+		if (key === 'Backspace' || key === 'Delete' || key === '0') {
 			userGrid[row][col] = 0;
 		}
 	}
@@ -30,6 +58,17 @@
 		if (usrValue === EmptyCellValue) return false;
 		return usrValue !== correctValue;
 	}
+
+	onMount(() => {
+		for (let r = 0; r < 9; r++) {
+			for (let c = 0; c < 9; c++) {
+				if (!puzzleGrid[r][c].fixed) {
+					cellRefs[r][c]?.focus();
+					return;
+				}
+			}
+		}
+	});
 </script>
 
 <div class="aspect-square h-full max-h-200 max-w-full contain-size">
@@ -37,11 +76,13 @@
 		{#each puzzleGrid as row, rowIndex}
 			{#each row as cell, colIndex}
 				<div
+					bind:this={cellRefs[rowIndex][colIndex]}
 					class="cell"
 					class:cell--error={isCellError(rowIndex, colIndex)}
 					role="gridcell"
 					tabindex="0"
 					onclick={(e) => {
+						e.preventDefault();
 						(e.currentTarget as HTMLElement).focus();
 					}}
 					onkeydown={(e) => handleKeydown(e, rowIndex, colIndex)}
@@ -122,20 +163,21 @@
 		border-left: var(--block-border-width) solid var(--block-border-color);
 	}
 
+	.cell:focus,
+	.cell:focus-visible {
+		outline: none;
+		box-shadow:
+			0 0 0 2pt lightgrey,
+			var(--box-shadow-active);
+		z-index: 1;
+	}
+
+	.cell[data-fixed='false']:hover,
 	.cell[data-fixed='false']:focus {
 		background-color: var(--cell-selected-bg);
-		box-shadow: var(--box-shadow-active);
-		z-index: 1;
 	}
+	.cell[data-fixed='true']:hover,
 	.cell[data-fixed='true']:focus {
-		background-color: var(--disabled);
-		box-shadow: var(--box-shadow-active);
-		z-index: 1;
-	}
-	.cell[data-fixed='false']:hover {
-		background-color: var(--cell-selected-bg);
-	}
-	.cell[data-fixed='true']:hover {
 		background-color: var(--disabled);
 	}
 
