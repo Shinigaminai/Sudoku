@@ -1,55 +1,121 @@
 <script lang="ts">
 	import { EmptyCellValue, type SudokuGrid } from '$lib/sudoku/types';
 	import { onMount } from 'svelte';
+	import {
+		calculateDragValue,
+		isTapGesture,
+		getNextTapValue,
+		type DragState
+	} from '$lib/ui/utils/dragInput';
+	import { getNavigationDirection, getNextCell, parseInputKey } from '$lib/ui/utils/keyboardInput';
 
-	export let puzzleGrid: SudokuGrid;
-	export let showSolution: boolean;
+	interface Props {
+		puzzleGrid: SudokuGrid;
+		showSolution: boolean;
+	}
+
+	const { puzzleGrid, showSolution }: Props = $props();
 
 	// User-entered values (0 = empty)
-	let userGrid: number[][] = Array.from({ length: 9 }, () => Array(9).fill(0));
-	let cellRefs: HTMLElement[][] = Array.from({ length: 9 }, () => Array(9));
+	let userGrid = $state(Array.from({ length: 9 }, () => Array(9).fill(0)));
+	let cellRefs = $state<HTMLElement[][]>(Array.from({ length: 9 }, () => Array(9)));
+
+	// Drag state
+	let dragging = $state(false);
+	let dragState = $state<DragState | null>(null);
+	let activeRow = $state(-1);
+	let activeCol = $state(-1);
+	let lastDragValue = $state(-1);
+	let hasDragged = $state(false);
 
 	function handleKeydown(e: KeyboardEvent, row: number, col: number) {
-		const key = e.key;
-
-		// ---- NAVIGATION ----
-		let nextRow = row;
-		let nextCol = col;
-
-		switch (key) {
-			case 'ArrowUp':
-				nextRow = Math.max(0, row - 1);
-				break;
-			case 'ArrowDown':
-				nextRow = Math.min(8, row + 1);
-				break;
-			case 'ArrowLeft':
-				nextCol = Math.max(0, col - 1);
-				break;
-			case 'ArrowRight':
-				nextCol = Math.min(8, col + 1);
-				break;
-			default:
-				break;
-		}
-
-		if (nextRow !== row || nextCol !== col) {
+		const direction = getNavigationDirection(e.key);
+		if (direction) {
 			e.preventDefault();
-			cellRefs[nextRow][nextCol]?.focus();
+			const next = getNextCell(row, col, direction);
+			cellRefs[next.row][next.col]?.focus();
 			return;
 		}
 
-		// ---- INPUT ----
+		if (puzzleGrid[row][col].fixed) return;
+
+		const value = parseInputKey(e.key);
+		if (value !== null) {
+			userGrid[row][col] = value;
+		}
+	}
+
+	function startDrag(e: PointerEvent, row: number, col: number) {
 		const cell = puzzleGrid[row][col];
 		if (cell.fixed) return;
 
-		if (key >= '1' && key <= '9') {
-			userGrid[row][col] = Number(key);
+		e.preventDefault();
+		(e.currentTarget as HTMLElement).focus();
+
+		dragging = true;
+		hasDragged = false;
+		activeRow = row;
+		activeCol = col;
+
+		const startValue = userGrid[row][col] ?? 0;
+		dragState = {
+			startX: e.clientX,
+			startY: e.clientY,
+			startValue,
+			startTime: Date.now()
+		};
+		lastDragValue = startValue;
+
+		window.addEventListener('pointermove', onDrag);
+		window.addEventListener('pointerup', endDrag);
+	}
+
+	function onDrag(e: PointerEvent) {
+		if (!dragging || !dragState) return;
+
+		const result = calculateDragValue(e.clientX, e.clientY, dragState);
+		hasDragged = result.hasDragged || hasDragged;
+
+		if (result.value !== lastDragValue) {
+			lastDragValue = result.value;
+			triggerPulse(activeRow, activeCol);
+		}
+		userGrid[activeRow][activeCol] = result.value;
+	}
+
+	function endDrag() {
+		if (!dragState) return;
+
+		const duration = Date.now() - dragState.startTime;
+		const row = activeRow;
+		const col = activeCol;
+
+		dragging = false;
+		dragState = null;
+
+		window.removeEventListener('pointermove', onDrag);
+		window.removeEventListener('pointerup', endDrag);
+
+		if (isTapGesture(hasDragged, duration)) {
+			const currentValue = userGrid[row][col];
+			userGrid[row][col] = getNextTapValue(currentValue);
+			triggerPulse(row, col);
 		}
 
-		if (key === 'Backspace' || key === 'Delete' || key === '0') {
-			userGrid[row][col] = 0;
-		}
+		activeRow = -1;
+		activeCol = -1;
+	}
+
+	/**
+	 * Triggers a pulse animation on the cell at the given position.
+	 */
+	function triggerPulse(row: number, col: number) {
+		const cell = cellRefs[row][col];
+		if (!cell) return;
+
+		cell.classList.remove('pulse');
+		void cell.offsetWidth;
+		cell.classList.add('pulse');
 	}
 
 	function isCellError(row: number, col: number) {
@@ -84,6 +150,7 @@
 						bind:this={cellRefs[row][col]}
 						class="cell"
 						class:cell--error={isCellError(row, col)}
+						class:is-dragging={dragging && row === activeRow && col === activeCol}
 						data-fixed={cell.fixed}
 						tabindex="0"
 						role="gridcell"
@@ -92,6 +159,7 @@
 							(e.currentTarget as HTMLElement).focus();
 						}}
 						onkeydown={(e) => handleKeydown(e, row, col)}
+						onpointerdown={(e) => startDrag(e, row, col)}
 					>
 						{#if cell.fixed || showSolution}
 							{cell.value}
@@ -127,6 +195,8 @@
 		border: calc(var(--block-border-width) * 2) solid var(--block-border-color);
 
 		container-type: inline-size;
+
+		touch-action: none;
 	}
 
 	.block {
@@ -183,6 +253,28 @@
 	.cell[data-fixed='true']:hover,
 	.cell[data-fixed='true']:focus {
 		background-color: var(--disabled);
+	}
+
+	.cell.is-dragging {
+		background-color: var(--cell-selected-bg);
+		cursor: grabbing;
+	}
+
+	/* Applied dynamically via JavaScript - :global prevents unused CSS warning */
+	.cell:global(.pulse) {
+		animation: pulse-scale 0.15s ease-out;
+	}
+
+	@keyframes pulse-scale {
+		0% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.08);
+		}
+		100% {
+			transform: scale(1);
+		}
 	}
 
 	.solved .cell--error {
