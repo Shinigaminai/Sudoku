@@ -49,15 +49,18 @@
 
     /* Shadows */
     --shadow-height: 6px;
+    --box-shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.60);
+    --box-shadow-md: 0 15px 28px rgba(0, 0, 0, 0.50);
+    --box-shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.55);
     --box-shadow:
         0 var(--shadow-height) 0 lightgrey,
-        0 12px 24px rgba(0, 0, 0, 0.55);
+        var(--box-shadow-lg);
     --box-shadow-hover:
         0 var(--shadow-height) 0 lightgrey,
-        0 15px 28px rgba(0, 0, 0, 0.50);
+        var(--box-shadow-md);
     --box-shadow-active:
         0 0 0 lightgrey,
-        0 4px 10px rgba(0, 0, 0, 0.60);
+        var(--box-shadow-sm);
 
     /* Focus */
     --focus-ring: 0 0 0 3px rgba(79, 140, 255, 0.4);

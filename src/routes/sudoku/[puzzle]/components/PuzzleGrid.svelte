@@ -72,31 +72,35 @@
 </script>
 
 <div class="aspect-square h-full max-h-200 max-w-full contain-size">
-	<div class="sudoku-grid {showSolution ? 'solved' : ''}">
-		{#each puzzleGrid as row, rowIndex}
-			{#each row as cell, colIndex}
-				<div
-					bind:this={cellRefs[rowIndex][colIndex]}
-					class="cell"
-					class:cell--error={isCellError(rowIndex, colIndex)}
-					role="gridcell"
-					tabindex="0"
-					onclick={(e) => {
-						e.preventDefault();
-						(e.currentTarget as HTMLElement).focus();
-					}}
-					onkeydown={(e) => handleKeydown(e, rowIndex, colIndex)}
-					data-fixed={cell.fixed}
-					data-row={rowIndex}
-					data-col={colIndex}
-				>
-					{#if cell.fixed || showSolution}
-						{cell.value}
-					{:else if userGrid[rowIndex][colIndex] !== 0}
-						{userGrid[rowIndex][colIndex]}
-					{/if}
-				</div>
-			{/each}
+	<div class="sudoku-grid" class:solved={showSolution}>
+		{#each Array(9) as _, blockIndex}
+			<div class="block">
+				{#each Array(9) as _, cellIndex}
+					{@const row = Math.floor(blockIndex / 3) * 3 + Math.floor(cellIndex / 3)}
+					{@const col = (blockIndex % 3) * 3 + (cellIndex % 3)}
+					{@const cell = puzzleGrid[row][col]}
+
+					<div
+						bind:this={cellRefs[row][col]}
+						class="cell"
+						class:cell--error={isCellError(row, col)}
+						data-fixed={cell.fixed}
+						tabindex="0"
+						role="gridcell"
+						onclick={(e) => {
+							e.preventDefault();
+							(e.currentTarget as HTMLElement).focus();
+						}}
+						onkeydown={(e) => handleKeydown(e, row, col)}
+					>
+						{#if cell.fixed || showSolution}
+							{cell.value}
+						{:else if userGrid[row][col] !== 0}
+							{userGrid[row][col]}
+						{/if}
+					</div>
+				{/each}
+			</div>
 		{/each}
 	</div>
 </div>
@@ -109,43 +113,51 @@
 		--cell-border-color: rgb(53, 52, 51);
 		--cell-border-width: 1px;
 		--block-border-color: rgb(39, 38, 37);
-		--block-border-width: 2px;
+		--block-border-width: 1px;
 
 		display: grid;
-		grid-template-columns: repeat(9, 1fr);
-		grid-auto-rows: 1fr;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: repeat(3, 1fr);
 
 		/* Scale grid to fit container but limit size */
 		width: 100%;
 		aspect-ratio: 1 / 1;
 
 		background-color: var(--block-border-color);
-		border: var(--block-border-width) solid var(--block-border-color);
+		border: calc(var(--block-border-width) * 2) solid var(--block-border-color);
 
 		container-type: inline-size;
 	}
 
+	.block {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: repeat(3, 1fr);
+
+		border: var(--block-border-width) solid var(--block-border-color);
+		background-color: var(--cell-border-color);
+	}
+
 	.cell {
 		display: flex;
-		justify-content: center;
 		align-items: center;
+		justify-content: center;
+
+		aspect-ratio: 1 / 1;
 		box-sizing: border-box;
 		padding: 0.25rem;
 
+		background-color: var(--cell-bg);
 		border: var(--cell-border-width) solid var(--cell-border-color);
+
+		color: var(--text);
+		font-size: 5cqw;
+		line-height: 1;
+
 		user-select: none;
 		cursor: default;
 
-		aspect-ratio: 1 / 1;
-
-		text-align: center;
-		line-height: 1;
-		color: var(--text);
-		background-color: var(--cell-bg);
 		transition: background-color 0.15s ease;
-
-		/* Scale text relative to grid width */
-		font-size: 5cqw;
 	}
 
 	.cell[data-fixed='true'] {
@@ -153,22 +165,14 @@
 		background-color: var(--cell-fixed-bg);
 	}
 
-	.cell[data-row='3'],
-	.cell[data-row='6'] {
-		border-top: var(--block-border-width) solid var(--block-border-color);
-	}
-
-	.cell[data-col='3'],
-	.cell[data-col='6'] {
-		border-left: var(--block-border-width) solid var(--block-border-color);
-	}
-
 	.cell:focus,
 	.cell:focus-visible {
 		outline: none;
 		box-shadow:
-			0 0 0 2pt lightgrey,
-			var(--box-shadow-active);
+			0 0 0 2px lightgrey,
+			0 0 3px 2px darkslategray,
+			var(--box-shadow-md);
+		border-radius: 1px;
 		z-index: 1;
 	}
 
@@ -181,7 +185,7 @@
 		background-color: var(--disabled);
 	}
 
-	.solved > .cell--error {
+	.solved .cell--error {
 		background-color: var(--error);
 	}
 </style>
