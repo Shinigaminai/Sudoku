@@ -1,7 +1,7 @@
-import { type SudokuGrid, type Difficulty, EmptyCellValue } from '$lib/sudoku/types';
-import { cloneGrid } from '../utils/gridUtils';
+import { type Difficulty, type SudokuGrid } from '$lib/sudoku/types';
 import { createSeededRng } from '../generator/seededRng';
 import { shuffle } from '../generator/shuffle';
+import { cloneGrid } from '../utils/gridUtils';
 
 export const DifficultyPrefillMap: Record<Difficulty, number> = {
 	solved: 81,
@@ -49,7 +49,6 @@ export function createPuzzle(
 		const row = Math.floor(idx / 9);
 		const col = idx % 9;
 
-		// grid[row][col].value = EmptyCellValue;
 		grid[row][col].fixed = false;
 	}
 

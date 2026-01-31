@@ -1,11 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import {
-	isValidGroup,
-	validateRows,
-	validateColumns,
-	validateBoxes,
-	validateGrid
-} from './gridValidation';
+import { validateRows, validateColumns, validateBoxes, validateGrid } from './gridValidation';
 
 import type { SudokuCell, SudokuGrid, SudokuValue } from '$lib/sudoku/types';
 

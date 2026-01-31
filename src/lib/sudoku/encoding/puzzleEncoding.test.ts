@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { encodePuzzle, decodePuzzle } from './puzzleEncoding';
-import type { SudokuCell, SudokuGrid } from '$lib/sudoku/types';
+import type { SudokuGrid } from '$lib/sudoku/types';
 import { createSolvedGrid } from '../utils/gridUtils';
 
 /**

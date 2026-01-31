@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { generateSolvedGrid } from '../generator/sudokuGenerator';
 import { createPuzzle, DifficultyPrefillMap } from './puzzleCreator';
 import { validateGrid } from '../validation/gridValidation';
-import { EmptyCellValue, type SudokuValue } from '../types';
+import { EmptyCellValue, type Difficulty } from '../types';
 
 describe('Puzzle Creation', () => {
 	it('creates puzzles with correct number of fixed cells per difficulty', () => {
@@ -11,7 +11,7 @@ describe('Puzzle Creation', () => {
 		const difficulties = DifficultyPrefillMap;
 
 		for (const [level, prefilled] of Object.entries(difficulties)) {
-			const puzzle = createPuzzle(solved, 123, level as any);
+			const puzzle = createPuzzle(solved, 123, level as Difficulty);
 
 			const countFilledValues = puzzle.flat().filter((c) => c.value !== EmptyCellValue).length;
 			expect(countFilledValues).toBe(81);

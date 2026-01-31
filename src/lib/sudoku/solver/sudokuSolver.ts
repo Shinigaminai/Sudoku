@@ -1,4 +1,4 @@
-import type { SudokuGrid, SudokuCell, SudokuValue } from '$lib/sudoku/types';
+import type { SudokuGrid, SudokuValue } from '$lib/sudoku/types';
 import { validateGrid } from '../validation/gridValidation';
 
 export interface SolverResult {

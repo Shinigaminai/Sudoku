@@ -1,10 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
-	EmptyCellValue,
 	FilledCellValues as SudokuValues,
 	type SudokuCell,
-	type SudokuGrid,
-	type SudokuValue
+	type SudokuGrid
 } from '$lib/sudoku/types';
 import { encodeSolutionGrid, decodeSolutionGrid } from './solutionEncoding';
 import { createCell } from '../utils/gridUtils';

@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { createPuzzle, encodePuzzle, generateSolvedGrid } from '$lib/sudoku/';
 	import type { Difficulty } from '$lib/sudoku/types/sudoku';
 	import ArrowSelect from '$lib/ui/components/ArrowSelect.svelte';
+	import type { PageData } from './$types';
 
-	let { seed }: { seed: number } = $props();
+	const { data } = $props<{ data: PageData }>();
+	let seed = $state(data.seed);
 
 	function handleGenerate() {
 		const solved = generateSolvedGrid(seed);
 		const puzzle = createPuzzle(solved, seed, difficulty);
 		const { solutionHex, initMaskHex } = encodePuzzle(puzzle);
-		goto(`/sudoku/${solutionHex}-${initMaskHex}`);
+		goto(resolve(`/sudoku/${solutionHex}-${initMaskHex}`));
 	}
 
 	const difficulties = [

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { solveSudoku, hasUniqueSolution } from './sudokuSolver';
-import type { SudokuGrid, SudokuCell } from '$lib/sudoku/types';
+import type { SudokuGrid } from '$lib/sudoku/types';
 import { createEmptyGrid, createSolvedGrid } from '../utils/gridUtils';
 
 /* ------------------------------------------------------------------ */

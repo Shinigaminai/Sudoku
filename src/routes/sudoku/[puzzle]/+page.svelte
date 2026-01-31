@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import PuzzleGrid from './components/PuzzleGrid.svelte';
-	import { decodePuzzle, decodeSolutionGrid } from '$lib/sudoku';
+	import { decodePuzzle } from '$lib/sudoku';
+	import { resolve } from '$app/paths';
 	import type { SudokuGrid } from '$lib/sudoku/types/sudoku';
 
 	const { data } = $props<{ data: PageData }>();
@@ -43,7 +44,7 @@
 
 <div class="page">
 	<div class="controls">
-		<a href="/" class="btn btn--primary">Home</a>
+		<a href={resolve('/')} class="btn btn--primary">Home</a>
 		<button class="btn btn--secondary" onclick={handleShareClicked}>Share</button>
 		<button class="btn btn--negative" onclick={solvePuzzle}> Solve </button>
 	</div>

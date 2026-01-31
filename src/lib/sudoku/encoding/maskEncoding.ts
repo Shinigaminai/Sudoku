@@ -28,7 +28,7 @@ export function decodeMask(maskHex: string, rows: number, cols: number): boolean
 	const size = rows * cols;
 
 	// Convert hex → binary string
-	let binaryString = BigInt(`0x${maskHex}`).toString(2).padStart(size, '0');
+	const binaryString = BigInt(`0x${maskHex}`).toString(2).padStart(size, '0');
 
 	// Convert to array of booleans
 	const bits = binaryString.split('').map((bit) => bit === '1');

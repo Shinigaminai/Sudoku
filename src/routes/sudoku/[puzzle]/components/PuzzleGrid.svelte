@@ -139,9 +139,9 @@
 
 <div class="aspect-square h-full max-h-200 max-w-full contain-size">
 	<div class="sudoku-grid" class:solved={showSolution}>
-		{#each Array(9) as _, blockIndex}
+		{#each Array.from({ length: 9 }, (_, i) => i) as blockIndex (blockIndex)}
 			<div class="block">
-				{#each Array(9) as _, cellIndex}
+				{#each Array.from({ length: 9 }, (_, i) => i) as cellIndex (cellIndex)}
 					{@const row = Math.floor(blockIndex / 3) * 3 + Math.floor(cellIndex / 3)}
 					{@const col = (blockIndex % 3) * 3 + (cellIndex % 3)}
 					{@const cell = puzzleGrid[row][col]}
