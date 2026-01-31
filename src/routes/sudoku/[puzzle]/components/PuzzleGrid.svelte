@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { EmptyCellValue, type SudokuGrid } from '$lib/sudoku/types';
-	import { onMount } from 'svelte';
 	import {
 		calculateDragValue,
-		isTapGesture,
 		getNextTapValue,
+		isTapGesture,
 		type DragState
 	} from '$lib/ui/utils/dragInput';
 	import { getNavigationDirection, getNextCell, parseInputKey } from '$lib/ui/utils/keyboardInput';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		puzzleGrid: SudokuGrid;
@@ -137,7 +137,7 @@
 	});
 </script>
 
-<div class="aspect-square h-full max-h-200 max-w-full contain-size">
+<div class="aspect-square h-full max-h-[min(100%,50rem)] max-w-[min(100%,50rem)] contain-size">
 	<div class="sudoku-grid" class:solved={showSolution}>
 		{#each Array.from({ length: 9 }, (_, i) => i) as blockIndex (blockIndex)}
 			<div class="block">
