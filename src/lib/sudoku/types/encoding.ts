@@ -1,7 +1,7 @@
-export type SolutionHex = string;
-export type InitMaskHex = string;
+export type SolutionB64 = string;
+export type InitMaskB64 = string;
 
 export interface EncodedSudoku {
-	solutionHex: SolutionHex;
-	initMaskHex: InitMaskHex;
+	solutionB64: SolutionB64;
+	initMaskB64: InitMaskB64;
 }

@@ -1,5 +1,6 @@
 import type { SudokuCell, SudokuGrid, SudokuValue } from '$lib/sudoku/types';
 import { isSudokuValue } from '$lib/sudoku/types';
+import { toBase64url, fromBase64url } from './base64url';
 
 /** Flatten grid into array of numbers (0–9) */
 function flattenGrid(grid: SudokuGrid): SudokuValue[] {
@@ -28,7 +29,7 @@ function unflattenGrid(digits: SudokuValue[]): SudokuGrid {
 			}
 			row.push({
 				value,
-				fixed: false // fixed is restored separately via initMaskHex
+				fixed: false // fixed is restored separately via initMaskB64
 			});
 		}
 		grid.push(row);
@@ -37,19 +38,20 @@ function unflattenGrid(digits: SudokuValue[]): SudokuGrid {
 	return grid as SudokuGrid;
 }
 
-/** Encode grid values into hex string (solutionHex) */
+/** Encode grid values into base64url string */
 export function encodeSolutionGrid(grid: SudokuGrid): string {
 	const digits = flattenGrid(grid);
-	return BigInt(digits.join('')).toString(16);
+	return toBase64url(BigInt(digits.join('')));
 }
 
-/** Decode solutionHex into a Sudoku grid */
-export function decodeSolutionGrid(solutionHex: string): SudokuGrid {
-	if (!/^[0-9a-fA-F]+$/.test(solutionHex)) {
-		throw new Error('Invalid hex string for solution encoding');
+/** Decode base64url-encoded solution into a Sudoku grid */
+export function decodeSolutionGrid(encoded: string): SudokuGrid {
+	if (!/^[A-Za-z0-9_-]+$/.test(encoded)) {
+		throw new Error('Invalid base64url string for solution encoding');
 	}
 
-	const decimalString = BigInt(`0x${solutionHex}`).toString(10).padStart(81, '0');
+	const bigIntValue = fromBase64url(encoded);
+	const decimalString = bigIntValue.toString(10).padStart(81, '0');
 	const digits = decimalString.split('').map(Number) as SudokuValue[];
 
 	return unflattenGrid(digits);

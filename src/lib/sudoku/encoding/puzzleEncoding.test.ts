@@ -10,9 +10,9 @@ const solvedGrid: SudokuGrid = createSolvedGrid();
 
 describe('puzzle encoding / decoding', () => {
 	it('encodes and decodes a puzzle losslessly', () => {
-		const { solutionHex, initMaskHex } = encodePuzzle(solvedGrid);
+		const { solutionB64, initMaskB64 } = encodePuzzle(solvedGrid);
 
-		const decoded = decodePuzzle(solutionHex, initMaskHex);
+		const decoded = decodePuzzle(solutionB64, initMaskB64);
 
 		for (let r = 0; r < 9; r++) {
 			for (let c = 0; c < 9; c++) {
@@ -29,13 +29,13 @@ describe('puzzle encoding / decoding', () => {
 		const a = encodePuzzle(solvedGrid);
 		const b = encodePuzzle(solvedGrid);
 
-		expect(a.solutionHex).toBe(b.solutionHex);
-		expect(a.initMaskHex).toBe(b.initMaskHex);
+		expect(a.solutionB64).toBe(b.solutionB64);
+		expect(a.initMaskB64).toBe(b.initMaskB64);
 	});
 
-	it('throws on invalid hex input', () => {
-		expect(() => decodePuzzle('not-hex', 'deadbeef')).toThrow();
+	it('throws on invalid base64url input', () => {
+		expect(() => decodePuzzle('invalid!char', 'AAAA')).toThrow();
 
-		expect(() => decodePuzzle('deadbeef', 'not-hex')).toThrow();
+		expect(() => decodePuzzle('AAAA', 'invalid!char')).toThrow();
 	});
 });

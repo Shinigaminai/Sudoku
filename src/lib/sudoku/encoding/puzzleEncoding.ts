@@ -11,20 +11,20 @@ import { createCell } from '../utils/gridUtils';
 /**
  * Encode a Sudoku puzzle into URL-safe primitives.
  *
- * - solutionHex encodes the full solved grid
- * - initMaskHex encodes which cells are initially visible
+ * - solutionB64 encodes the full solved grid (base64url)
+ * - initMaskB64 encodes which cells are initially visible (base64url)
  */
 export function encodePuzzle(grid: SudokuGrid): {
-	solutionHex: string;
-	initMaskHex: string;
+	solutionB64: string;
+	initMaskB64: string;
 } {
-	const solutionHex = encodeSolutionGrid(grid);
+	const solutionB64 = encodeSolutionGrid(grid);
 
-	const initMaskHex = encodeMask(grid.map((row) => row.map((cell) => cell.fixed)));
+	const initMaskB64 = encodeMask(grid.map((row) => row.map((cell) => cell.fixed)));
 
 	return {
-		solutionHex,
-		initMaskHex
+		solutionB64,
+		initMaskB64
 	};
 }
 
@@ -34,9 +34,9 @@ export function encodePuzzle(grid: SudokuGrid): {
  * Reconstructs the full grid and applies fixed/editable state
  * based on the init mask.
  */
-export function decodePuzzle(solutionHex: string, initMaskHex: string): SudokuGrid {
-	const solutionGrid = decodeSolutionGrid(solutionHex);
-	const initMask = decodeMask(initMaskHex, 9, 9);
+export function decodePuzzle(solutionB64: string, initMaskB64: string): SudokuGrid {
+	const solutionGrid = decodeSolutionGrid(solutionB64);
+	const initMask = decodeMask(initMaskB64, 9, 9);
 
 	return solutionGrid.map((row: SudokuCell[], r) =>
 		row.map((cell, c) => {
@@ -54,19 +54,19 @@ export function decodePuzzle(solutionHex: string, initMaskHex: string): SudokuGr
 
 /**
  * Checks if a string is a valid puzzle encoding.
- * Valid format: "{solutionHex}-{initMaskHex}"
- * Both parts must be valid hex strings.
+ * Valid format: "{solutionB64}:{initMaskB64}"
+ * Both parts must be valid base64url strings.
  */
 export function isPuzzleEncoding(value: string): boolean {
 	if (typeof value !== 'string') return false;
 
-	const parts = value.split('-');
+	const parts = value.split(':');
 	if (parts.length !== 2) return false;
 
-	const [solutionHex, initMaskHex] = parts;
+	const [solutionB64, initMaskB64] = parts;
 
-	// Hex regex: one or more 0-9, a-f, A-F
-	const hexRegex = /^[0-9a-fA-F]+$/;
+	// Base64url regex: one or more A-Z, a-z, 0-9, - or _
+	const base64urlRegex = /^[A-Za-z0-9_-]+$/;
 
-	return hexRegex.test(solutionHex) && hexRegex.test(initMaskHex);
+	return base64urlRegex.test(solutionB64) && base64urlRegex.test(initMaskB64);
 }

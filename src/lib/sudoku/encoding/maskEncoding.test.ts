@@ -62,7 +62,7 @@ describe('Mask Encoding / Decoding', () => {
 		expect(decoded).toEqual(grid);
 	});
 
-	it('should throw for invalid hex input', () => {
-		expect(() => decodeMask('ZZZ', 3, 3)).toThrow('Invalid hex string');
+	it('should throw for invalid base64url input', () => {
+		expect(() => decodeMask('invalid!char', 3, 3)).toThrow('Invalid base64url string');
 	});
 });

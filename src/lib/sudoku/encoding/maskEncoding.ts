@@ -1,5 +1,7 @@
+import { toBase64url, fromBase64url } from './base64url';
+
 /**
- * Encodes a 2D boolean grid into a hexadecimal string.
+ * Encodes a 2D boolean grid into a base64url string.
  * Works for any size 2D array.
  */
 export function encodeMask(mask: boolean[][]): string {
@@ -9,26 +11,27 @@ export function encodeMask(mask: boolean[][]): string {
 		.map((bit) => (bit ? '1' : '0'))
 		.join('');
 
-	// Convert to BigInt and then to hex
+	// Convert to BigInt and then to base64url
 	const bigIntValue = BigInt(`0b${binaryString}`);
-	return bigIntValue.toString(16);
+	return toBase64url(bigIntValue);
 }
 
 /**
- * Decodes a hexadecimal string back into a 2D boolean grid.
- * @param maskHex The hex string to decode
+ * Decodes a base64url string back into a 2D boolean grid.
+ * @param encoded The base64url string to decode
  * @param rows Number of rows in the resulting grid
  * @param cols Number of columns in the resulting grid
  */
-export function decodeMask(maskHex: string, rows: number, cols: number): boolean[][] {
-	if (!/^[0-9a-fA-F]+$/.test(maskHex)) {
-		throw new Error('Invalid hex string');
+export function decodeMask(encoded: string, rows: number, cols: number): boolean[][] {
+	if (!/^[A-Za-z0-9_-]+$/.test(encoded)) {
+		throw new Error('Invalid base64url string');
 	}
 
 	const size = rows * cols;
 
-	// Convert hex → binary string
-	const binaryString = BigInt(`0x${maskHex}`).toString(2).padStart(size, '0');
+	// Convert base64url → BigInt → binary string
+	const bigIntValue = fromBase64url(encoded);
+	const binaryString = bigIntValue.toString(2).padStart(size, '0');
 
 	// Convert to array of booleans
 	const bits = binaryString.split('').map((bit) => bit === '1');

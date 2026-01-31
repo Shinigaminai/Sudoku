@@ -9,8 +9,8 @@
 
 	const puzzle = (() => data.puzzle)();
 
-	const [solutionHex, initMaskHex] = puzzle.split('-');
-	const puzzleGrid: SudokuGrid = decodePuzzle(solutionHex, initMaskHex);
+	const [solutionB64, initMaskB64] = puzzle.split(':');
+	const puzzleGrid: SudokuGrid = decodePuzzle(solutionB64, initMaskB64);
 
 	let showSolution = $state(false);
 

@@ -4,16 +4,14 @@
 	import { createPuzzle, encodePuzzle, generateSolvedGrid } from '$lib/sudoku/';
 	import type { Difficulty } from '$lib/sudoku/types/sudoku';
 	import ArrowSelect from '$lib/ui/components/ArrowSelect.svelte';
-	import type { PageData } from './$types';
 
-	const { data } = $props<{ data: PageData }>();
-	let seed = $state(data.seed);
+	let seed = $state(Math.floor(Math.random() * 1000));
 
 	function handleGenerate() {
 		const solved = generateSolvedGrid(seed);
 		const puzzle = createPuzzle(solved, seed, difficulty);
-		const { solutionHex, initMaskHex } = encodePuzzle(puzzle);
-		goto(resolve(`/sudoku/${solutionHex}-${initMaskHex}`));
+		const { solutionB64, initMaskB64 } = encodePuzzle(puzzle);
+		goto(resolve(`/sudoku/${solutionB64}:${initMaskB64}`));
 	}
 
 	const difficulties = [
