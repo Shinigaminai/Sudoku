@@ -134,6 +134,20 @@ pnpm run preview
 
 ---
 
+## 🐳 Docker
+
+Run with Docker:
+
+```bash
+docker compose -f docker/docker-compose.yml up -d
+```
+
+The app will be available at `http://localhost:3000`.
+
+See [docker/DOCKER.md](docker/DOCKER.md) for configuration options.
+
+---
+
 ## 🧩 Project Goals
 
 * Deterministic Sudoku generation via URL-based seeds
