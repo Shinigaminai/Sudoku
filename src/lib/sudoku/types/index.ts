@@ -1,2 +1,2 @@
-export * from "./sudoku";
-export * from "./encoding";
+export * from './sudoku';
+export * from './encoding';

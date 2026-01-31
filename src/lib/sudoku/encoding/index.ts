@@ -1,3 +1,3 @@
-export * from "./solutionEncoding";
-export * from "./maskEncoding";
-export * from "./puzzleEncoding"
+export * from './solutionEncoding';
+export * from './maskEncoding';
+export * from './puzzleEncoding';

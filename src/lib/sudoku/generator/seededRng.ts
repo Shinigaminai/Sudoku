@@ -1,9 +1,9 @@
 export interface SeededRng {
-  /**
-   * Returns a floating point number in the range [0, 1)
-   * Deterministic based on initial seed.
-   */
-  next(): number;
+	/**
+	 * Returns a floating point number in the range [0, 1)
+	 * Deterministic based on initial seed.
+	 */
+	next(): number;
 }
 
 /**
@@ -13,14 +13,14 @@ export interface SeededRng {
  * @param seed Any integer value
  */
 export function createSeededRng(seed: number): SeededRng {
-  // Force seed into unsigned 32-bit space
-  let state = seed >>> 0;
+	// Force seed into unsigned 32-bit space
+	let state = seed >>> 0;
 
-  return {
-    next(): number {
-      // LCG parameters (Numerical Recipes)
-      state = (1664525 * state + 1013904223) >>> 0;
-      return state / 0xffffffff;
-    }
-  };
+	return {
+		next(): number {
+			// LCG parameters (Numerical Recipes)
+			state = (1664525 * state + 1013904223) >>> 0;
+			return state / 0xffffffff;
+		}
+	};
 }

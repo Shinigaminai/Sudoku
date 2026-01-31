@@ -6,8 +6,8 @@ export const FilledCellValues: SudokuValue[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 /** A single cell in the Sudoku grid */
 export interface SudokuCell {
-  value: SudokuValue;
-  fixed: boolean;
+	value: SudokuValue;
+	fixed: boolean;
 }
 
 /** 9x9 Sudoku grid */
@@ -25,8 +25,8 @@ export type SudokuGrid = SudokuCell[][];
 //   readonly SudokuCell[]
 // ];
 
-export type Difficulty = "solved" | "easy" | "medium" | "hard" | "expert";
+export type Difficulty = 'solved' | 'easy' | 'medium' | 'hard' | 'expert';
 
 export function isSudokuValue(value: number): value is SudokuValue {
-  return Number.isInteger(value) && value >= 0 && value <= 9;
+	return Number.isInteger(value) && value >= 0 && value <= 9;
 }

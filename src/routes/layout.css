@@ -2,79 +2,73 @@
 @import '../app.css';
 
 :root {
-    /* Base */
-    --bg: #f5f3eb;
-    /* warm beige background */
-    --text: #111827;
-    /* near-black text */
-    --text-muted: #6b7280;
-    /* secondary text */
+	/* Base */
+	--bg: #f5f3eb;
+	/* warm beige background */
+	--text: #111827;
+	/* near-black text */
+	--text-muted: #6b7280;
+	/* secondary text */
 
-    /* Surfaces */
-    --surface: #ffffff;
-    /* cards, panels */
-    --surface-alt: #f1f5f9;
-    /* subtle contrast surface */
-    --border: #e5e7eb;
+	/* Surfaces */
+	--surface: #ffffff;
+	/* cards, panels */
+	--surface-alt: #f1f5f9;
+	/* subtle contrast surface */
+	--border: #e5e7eb;
 
-    /* Brand / Primary */
-    --primary: #4f8cff;
-    --primary-hover: #5fa0ff;
-    --primary-active: #2f6bd8;
+	/* Brand / Primary */
+	--primary: #4f8cff;
+	--primary-hover: #5fa0ff;
+	--primary-active: #2f6bd8;
 
-    /* Secondary */
-    --secondary: #b38bff;
-    --secondary-hover: #ba94ff;
-    --secondary-active: #6d4bd8;
+	/* Secondary */
+	--secondary: #b38bff;
+	--secondary-hover: #ba94ff;
+	--secondary-active: #6d4bd8;
 
-    /* Success */
-    --success: #22c55e;
-    --success-bg: #dcfce7;
+	/* Success */
+	--success: #22c55e;
+	--success-bg: #dcfce7;
 
-    /* Warning */
-    --warning: #f59e0b;
-    --warning-bg: #fef3c7;
+	/* Warning */
+	--warning: #f59e0b;
+	--warning-bg: #fef3c7;
 
-    /* Error */
-    --error: #ef4444;
-    --error-bg: #fee2e2;
+	/* Error */
+	--error: #ef4444;
+	--error-bg: #fee2e2;
 
-    /* Info */
-    --info: #0ea5e9;
-    --info-bg: #e0f2fe;
+	/* Info */
+	--info: #0ea5e9;
+	--info-bg: #e0f2fe;
 
-    /* Disabled */
-    --disabled: #9ca3af;
-    --disabled-bg: #e5e7eb;
+	/* Disabled */
+	--disabled: #9ca3af;
+	--disabled-bg: #e5e7eb;
 
-    /* Shadows */
-    --shadow-height: 6px;
-    --box-shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.60);
-    --box-shadow-md: 0 15px 28px rgba(0, 0, 0, 0.50);
-    --box-shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.55);
-    --box-shadow:
-        0 var(--shadow-height) 0 lightgrey,
-        var(--box-shadow-lg);
-    --box-shadow-hover:
-        0 var(--shadow-height) 0 lightgrey,
-        var(--box-shadow-md);
-    --box-shadow-active:
-        0 0 0 lightgrey,
-        var(--box-shadow-sm);
+	/* Shadows */
+	--shadow-height: 6px;
+	--box-shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.6);
+	--box-shadow-md: 0 15px 28px rgba(0, 0, 0, 0.5);
+	--box-shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.55);
+	--box-shadow: 0 var(--shadow-height) 0 lightgrey, var(--box-shadow-lg);
+	--box-shadow-hover: 0 var(--shadow-height) 0 lightgrey, var(--box-shadow-md);
+	--box-shadow-active: 0 0 0 lightgrey, var(--box-shadow-sm);
 
-    /* Focus */
-    --focus-ring: 0 0 0 3px rgba(79, 140, 255, 0.4);
+	/* Focus */
+	--focus-ring: 0 0 0 3px rgba(79, 140, 255, 0.4);
 
-    --filter-active: brightness(0.98);
+	--filter-active: brightness(0.98);
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: system-ui, sans-serif;
-    display: flow-root;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: system-ui, sans-serif;
+	display: flow-root;
 }

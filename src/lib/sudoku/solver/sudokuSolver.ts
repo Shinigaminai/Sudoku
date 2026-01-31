@@ -1,9 +1,9 @@
-import type { SudokuGrid, SudokuCell, SudokuValue } from "$lib/sudoku/types";
-import { validateGrid } from "../validation/gridValidation";
+import type { SudokuGrid, SudokuCell, SudokuValue } from '$lib/sudoku/types';
+import { validateGrid } from '../validation/gridValidation';
 
 export interface SolverResult {
-  solvedGrid?: SudokuGrid;
-  isSolvable: boolean;
+	solvedGrid?: SudokuGrid;
+	isSolvable: boolean;
 }
 
 /**
@@ -13,34 +13,34 @@ export interface SolverResult {
  *   - solvedGrid: the filled grid if solvable, otherwise undefined
  */
 export function solveSudoku(grid: SudokuGrid): { isSolvable: boolean; solvedGrid?: SudokuGrid } {
-  // Check if starting grid is valid
-  if (!validateGrid(grid)) {
-    return { isSolvable: false };
-  }
+	// Check if starting grid is valid
+	if (!validateGrid(grid)) {
+		return { isSolvable: false };
+	}
 
-  // Clone the grid to avoid mutating original
-  const g: SudokuGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
+	// Clone the grid to avoid mutating original
+	const g: SudokuGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
 
-  function backtrack(r = 0, c = 0): boolean {
-    if (r === 9) return true; // solved
+	function backtrack(r = 0, c = 0): boolean {
+		if (r === 9) return true; // solved
 
-    const [nextR, nextC] = c === 8 ? [r + 1, 0] : [r, c + 1];
+		const [nextR, nextC] = c === 8 ? [r + 1, 0] : [r, c + 1];
 
-    if (g[r][c].value !== 0) return backtrack(nextR, nextC);
+		if (g[r][c].value !== 0) return backtrack(nextR, nextC);
 
-    for (let num = 1 as SudokuValue; num <= 9; num++) {
-      g[r][c].value = num;
-      if (validateGrid(g)) {
-        if (backtrack(nextR, nextC)) return true;
-      }
-      g[r][c].value = 0; // backtrack
-    }
+		for (let num = 1 as SudokuValue; num <= 9; num++) {
+			g[r][c].value = num;
+			if (validateGrid(g)) {
+				if (backtrack(nextR, nextC)) return true;
+			}
+			g[r][c].value = 0; // backtrack
+		}
 
-    return false;
-  }
+		return false;
+	}
 
-  const isSolvable = backtrack();
-  return { isSolvable, solvedGrid: isSolvable ? g : undefined };
+	const isSolvable = backtrack();
+	return { isSolvable, solvedGrid: isSolvable ? g : undefined };
 }
 
 /**
@@ -51,33 +51,33 @@ export function solveSudoku(grid: SudokuGrid): { isSolvable: boolean; solvedGrid
  * Treats 0 as empty.
  */
 export function hasUniqueSolution(grid: SudokuGrid): boolean {
-  if (!validateGrid(grid)) return false;
+	if (!validateGrid(grid)) return false;
 
-  let solutionCount = 0;
+	let solutionCount = 0;
 
-  function solve(g: SudokuGrid, r = 0, c = 0): boolean {
-    if (r === 9) {
-      solutionCount++;
-      return solutionCount > 1; // stop if more than one solution found
-    }
+	function solve(g: SudokuGrid, r = 0, c = 0): boolean {
+		if (r === 9) {
+			solutionCount++;
+			return solutionCount > 1; // stop if more than one solution found
+		}
 
-    const [nextR, nextC] = c === 8 ? [r + 1, 0] : [r, c + 1];
+		const [nextR, nextC] = c === 8 ? [r + 1, 0] : [r, c + 1];
 
-    if (g[r][c].value !== 0) {
-      return solve(g, nextR, nextC);
-    }
+		if (g[r][c].value !== 0) {
+			return solve(g, nextR, nextC);
+		}
 
-    for (let num = 1 as SudokuValue; num <= 9; num++) {
-      g[r][c].value = num;
-      if (validateGrid(g)) {
-        if (solve(g, nextR, nextC)) return true;
-      }
-      g[r][c].value = 0; // backtrack
-    }
+		for (let num = 1 as SudokuValue; num <= 9; num++) {
+			g[r][c].value = num;
+			if (validateGrid(g)) {
+				if (solve(g, nextR, nextC)) return true;
+			}
+			g[r][c].value = 0; // backtrack
+		}
 
-    return false;
-  }
+		return false;
+	}
 
-  solve(JSON.parse(JSON.stringify(grid))); // deep clone to avoid mutation
-  return solutionCount === 1;
+	solve(JSON.parse(JSON.stringify(grid))); // deep clone to avoid mutation
+	return solutionCount === 1;
 }

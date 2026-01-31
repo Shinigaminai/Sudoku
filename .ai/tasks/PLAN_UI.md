@@ -130,4 +130,3 @@ This document outlines the design and behavior of the Sudoku web app UI, includi
 3. Implement generator page with inputs and navigation to URL-encoded puzzle page
 4. Make the UI responsive and mobile-friendly
 5. Add unit / integration tests for URL-based puzzle reconstruction
-

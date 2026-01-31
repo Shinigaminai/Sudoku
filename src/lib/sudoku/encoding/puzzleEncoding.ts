@@ -1,7 +1,12 @@
-import { isSudokuValue, type SudokuCell, type SudokuGrid, type SudokuValue } from "$lib/sudoku/types";
-import { encodeSolutionGrid, decodeSolutionGrid } from "./solutionEncoding";
-import { encodeMask, decodeMask } from "./maskEncoding";
-import { createCell } from "../utils/gridUtils";
+import {
+	isSudokuValue,
+	type SudokuCell,
+	type SudokuGrid,
+	type SudokuValue
+} from '$lib/sudoku/types';
+import { encodeSolutionGrid, decodeSolutionGrid } from './solutionEncoding';
+import { encodeMask, decodeMask } from './maskEncoding';
+import { createCell } from '../utils/gridUtils';
 
 /**
  * Encode a Sudoku puzzle into URL-safe primitives.
@@ -10,19 +15,17 @@ import { createCell } from "../utils/gridUtils";
  * - initMaskHex encodes which cells are initially visible
  */
 export function encodePuzzle(grid: SudokuGrid): {
-  solutionHex: string;
-  initMaskHex: string;
+	solutionHex: string;
+	initMaskHex: string;
 } {
-  const solutionHex = encodeSolutionGrid(grid);
+	const solutionHex = encodeSolutionGrid(grid);
 
-  const initMaskHex = encodeMask(
-    grid.map((row) => row.map((cell) => cell.fixed))
-  );
+	const initMaskHex = encodeMask(grid.map((row) => row.map((cell) => cell.fixed)));
 
-  return {
-    solutionHex,
-    initMaskHex,
-  };
+	return {
+		solutionHex,
+		initMaskHex
+	};
 }
 
 /**
@@ -31,25 +34,22 @@ export function encodePuzzle(grid: SudokuGrid): {
  * Reconstructs the full grid and applies fixed/editable state
  * based on the init mask.
  */
-export function decodePuzzle(
-  solutionHex: string,
-  initMaskHex: string
-): SudokuGrid {
-  const solutionGrid = decodeSolutionGrid(solutionHex);
-  const initMask = decodeMask(initMaskHex, 9, 9);
+export function decodePuzzle(solutionHex: string, initMaskHex: string): SudokuGrid {
+	const solutionGrid = decodeSolutionGrid(solutionHex);
+	const initMask = decodeMask(initMaskHex, 9, 9);
 
-  return solutionGrid.map((row: SudokuCell[], r) =>
-    row.map((cell, c) => {
-      const fixed = initMask[r][c];
-      const value: SudokuValue = cell.value;
+	return solutionGrid.map((row: SudokuCell[], r) =>
+		row.map((cell, c) => {
+			const fixed = initMask[r][c];
+			const value: SudokuValue = cell.value;
 
-      if (!isSudokuValue(value)) {
-        throw new Error(`Invalid Sudoku value at row ${r}, col ${c}: ${value}`);
-      }
+			if (!isSudokuValue(value)) {
+				throw new Error(`Invalid Sudoku value at row ${r}, col ${c}: ${value}`);
+			}
 
-      return createCell(value, fixed);
-    })
-  ) as SudokuGrid;
+			return createCell(value, fixed);
+		})
+	) as SudokuGrid;
 }
 
 /**
@@ -58,15 +58,15 @@ export function decodePuzzle(
  * Both parts must be valid hex strings.
  */
 export function isPuzzleEncoding(value: string): boolean {
-  if (typeof value !== 'string') return false;
+	if (typeof value !== 'string') return false;
 
-  const parts = value.split('-');
-  if (parts.length !== 2) return false;
+	const parts = value.split('-');
+	if (parts.length !== 2) return false;
 
-  const [solutionHex, initMaskHex] = parts;
+	const [solutionHex, initMaskHex] = parts;
 
-  // Hex regex: one or more 0-9, a-f, A-F
-  const hexRegex = /^[0-9a-fA-F]+$/;
+	// Hex regex: one or more 0-9, a-f, A-F
+	const hexRegex = /^[0-9a-fA-F]+$/;
 
-  return hexRegex.test(solutionHex) && hexRegex.test(initMaskHex);
+	return hexRegex.test(solutionHex) && hexRegex.test(initMaskHex);
 }

@@ -1,14 +1,14 @@
-import { type SudokuGrid, type Difficulty, EmptyCellValue } from "$lib/sudoku/types";
-import { cloneGrid } from "../utils/gridUtils";
-import { createSeededRng } from "../generator/seededRng";
-import { shuffle } from "../generator/shuffle";
+import { type SudokuGrid, type Difficulty, EmptyCellValue } from '$lib/sudoku/types';
+import { cloneGrid } from '../utils/gridUtils';
+import { createSeededRng } from '../generator/seededRng';
+import { shuffle } from '../generator/shuffle';
 
 export const DifficultyPrefillMap: Record<Difficulty, number> = {
-  solved: 81,
-  easy: 45,
-  medium: 36,
-  hard: 27,
-  expert: 18,
+	solved: 81,
+	easy: 45,
+	medium: 36,
+	hard: 27,
+	expert: 18
 };
 
 /**
@@ -19,39 +19,39 @@ export const DifficultyPrefillMap: Record<Difficulty, number> = {
  * @param difficulty {@link Difficulty} Difficulty level of the puzzle
  */
 export function createPuzzle(
-  solvedGrid: SudokuGrid,
-  seed: number,
-  difficulty: Difficulty
+	solvedGrid: SudokuGrid,
+	seed: number,
+	difficulty: Difficulty
 ): SudokuGrid {
-  const prefillCount = DifficultyPrefillMap[difficulty];
-  if (!prefillCount) throw new Error(`Invalid difficulty: ${difficulty}`);
+	const prefillCount = DifficultyPrefillMap[difficulty];
+	if (!prefillCount) throw new Error(`Invalid difficulty: ${difficulty}`);
 
-  const grid = cloneGrid(solvedGrid);
-  const rng = createSeededRng(seed);
+	const grid = cloneGrid(solvedGrid);
+	const rng = createSeededRng(seed);
 
-  // Flatten cell indices [0..80]
-  const indices = Array.from({ length: 81 }, (_, i) => i);
-  shuffle(indices, rng);
+	// Flatten cell indices [0..80]
+	const indices = Array.from({ length: 81 }, (_, i) => i);
+	shuffle(indices, rng);
 
-  // Number of cells to remove
-  const cellsToRemove = 81 - prefillCount;
+	// Number of cells to remove
+	const cellsToRemove = 81 - prefillCount;
 
-  // Fix all cells
-  for (let r = 0; r < 9; r++) {
-    for (let c = 0; c < 9; c++) {
-      grid[r][c].fixed = true;
-    }
-  }
+	// Fix all cells
+	for (let r = 0; r < 9; r++) {
+		for (let c = 0; c < 9; c++) {
+			grid[r][c].fixed = true;
+		}
+	}
 
-  // Unfix some cells
-  for (let i = 0; i < cellsToRemove; i++) {
-    const idx = indices[i];
-    const row = Math.floor(idx / 9);
-    const col = idx % 9;
+	// Unfix some cells
+	for (let i = 0; i < cellsToRemove; i++) {
+		const idx = indices[i];
+		const row = Math.floor(idx / 9);
+		const col = idx % 9;
 
-    // grid[row][col].value = EmptyCellValue;
-    grid[row][col].fixed = false;
-  }
+		// grid[row][col].value = EmptyCellValue;
+		grid[row][col].fixed = false;
+	}
 
-  return grid;
+	return grid;
 }

@@ -3,12 +3,15 @@
  * Works for any size 2D array.
  */
 export function encodeMask(mask: boolean[][]): string {
-  // Flatten 2D array into binary string
-  const binaryString = mask.flat().map((bit) => (bit ? "1" : "0")).join("");
+	// Flatten 2D array into binary string
+	const binaryString = mask
+		.flat()
+		.map((bit) => (bit ? '1' : '0'))
+		.join('');
 
-  // Convert to BigInt and then to hex
-  const bigIntValue = BigInt(`0b${binaryString}`);
-  return bigIntValue.toString(16);
+	// Convert to BigInt and then to hex
+	const bigIntValue = BigInt(`0b${binaryString}`);
+	return bigIntValue.toString(16);
 }
 
 /**
@@ -18,23 +21,23 @@ export function encodeMask(mask: boolean[][]): string {
  * @param cols Number of columns in the resulting grid
  */
 export function decodeMask(maskHex: string, rows: number, cols: number): boolean[][] {
-  if (!/^[0-9a-fA-F]+$/.test(maskHex)) {
-    throw new Error("Invalid hex string");
-  }
+	if (!/^[0-9a-fA-F]+$/.test(maskHex)) {
+		throw new Error('Invalid hex string');
+	}
 
-  const size = rows * cols;
+	const size = rows * cols;
 
-  // Convert hex → binary string
-  let binaryString = BigInt(`0x${maskHex}`).toString(2).padStart(size, "0");
+	// Convert hex → binary string
+	let binaryString = BigInt(`0x${maskHex}`).toString(2).padStart(size, '0');
 
-  // Convert to array of booleans
-  const bits = binaryString.split("").map((bit) => bit === "1");
+	// Convert to array of booleans
+	const bits = binaryString.split('').map((bit) => bit === '1');
 
-  // Split flat array into rows
-  const grid: boolean[][] = [];
-  for (let r = 0; r < rows; r++) {
-    grid.push(bits.slice(r * cols, (r + 1) * cols));
-  }
+	// Split flat array into rows
+	const grid: boolean[][] = [];
+	for (let r = 0; r < rows; r++) {
+		grid.push(bits.slice(r * cols, (r + 1) * cols));
+	}
 
-  return grid;
+	return grid;
 }

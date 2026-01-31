@@ -4,15 +4,15 @@
 
 Before code, let’s lock the invariants:
 
-* Generator produces **fully solved 9×9 grids**
-* Output is always:
+- Generator produces **fully solved 9×9 grids**
+- Output is always:
+  - Valid Sudoku
+  - Solvable (trivially, because it’s solved)
 
-  * Valid Sudoku
-  * Solvable (trivially, because it’s solved)
-* **Deterministic** when given the same seed
-* **Framework-agnostic**
-* Uses **no global randomness**
-* Testable in isolation
+- **Deterministic** when given the same seed
+- **Framework-agnostic**
+- Uses **no global randomness**
+- Testable in isolation
 
 ---
 
@@ -30,9 +30,9 @@ src/lib/sudoku/
 
 You already have:
 
-* grid validators
-* solver
-* encoding/decoding
+- grid validators
+- solver
+- encoding/decoding
 
 The generator will **reuse those**, not reimplement logic.
 
@@ -44,9 +44,9 @@ The generator will **reuse those**, not reimplement logic.
 
 JS `Math.random()` breaks:
 
-* reproducibility
-* testability
-* URL determinism
+- reproducibility
+- testability
+- URL determinism
 
 ### Solution: Seeded RNG
 
@@ -54,7 +54,7 @@ JS `Math.random()` breaks:
 
 ```ts
 export interface SeededRng {
-  next(): number; // returns [0, 1)
+	next(): number; // returns [0, 1)
 }
 ```
 
@@ -62,22 +62,22 @@ Example implementation (simple, stable):
 
 ```ts
 export function createSeededRng(seed: number): SeededRng {
-  let state = seed >>> 0;
+	let state = seed >>> 0;
 
-  return {
-    next() {
-      state = (1664525 * state + 1013904223) >>> 0;
-      return state / 0xffffffff;
-    }
-  };
+	return {
+		next() {
+			state = (1664525 * state + 1013904223) >>> 0;
+			return state / 0xffffffff;
+		}
+	};
 }
 ```
 
 This gives you:
 
-* deterministic shuffling
-* reproducible grids
-* testable output
+- deterministic shuffling
+- reproducible grids
+- testable output
 
 ---
 
@@ -91,8 +91,8 @@ function createEmptyGrid(): SudokuGrid;
 
 All cells:
 
-* `value: null`
-* `fixed: false`
+- `value: null`
+- `fixed: false`
 
 This is already part of gridUtils.
 
@@ -102,14 +102,14 @@ This is already part of gridUtils.
 
 Why?
 
-* They don’t interact
-* Reduces backtracking complexity massively
+- They don’t interact
+- Reduces backtracking complexity massively
 
 Boxes:
 
-* (0,0)
-* (3,3)
-* (6,6)
+- (0,0)
+- (3,3)
+- (6,6)
 
 Algorithm per box:
 
@@ -134,8 +134,8 @@ Now use a **solver-style backtracking**, but for generation:
 
 This is almost the same as the solver, except:
 
-* No early exit
-* Stops when grid is completely filled
+- No early exit
+- Stops when grid is completely filled
 
 ---
 
@@ -144,7 +144,7 @@ This is almost the same as the solver, except:
 The generator returns a **solution**, not a puzzle.
 
 ```ts
-fixed: true
+fixed: true;
 ```
 
 for all cells.
@@ -161,20 +161,20 @@ export function generateSolvedGrid(seed: number): SudokuGrid;
 
 Properties:
 
-* Same seed → same grid
-* Different seed → different grid
-* No side effects
+- Same seed → same grid
+- Different seed → different grid
+- No side effects
 
 ---
 
 ## 5.5 Failure Handling
 
-In practice, generation *should not fail*, but defensively:
+In practice, generation _should not fail_, but defensively:
 
-* If backtracking exhausts options:
+- If backtracking exhausts options:
+  - Throw an error (this indicates a bug)
 
-  * Throw an error (this indicates a bug)
-* Tests should never observe this path
+- Tests should never observe this path
 
 ---
 

@@ -7,35 +7,29 @@ The app focuses on reproducible Sudoku puzzles, clean design, and simple usabili
 
 ## ✨ Features
 
-* **Reproducible Sudokus**
+- **Reproducible Sudokus**
+  - Every Sudoku is generated from a unique numeric seed.
+  - The seed is embedded directly in the URL, making puzzles easy to share and revisit.
 
-  * Every Sudoku is generated from a unique numeric seed.
-  * The seed is embedded directly in the URL, making puzzles easy to share and revisit.
+- **Multiple Difficulty Levels**
+  - Difficulties are defined by the number of prefilled cells.
+  - Easily switch between difficulty levels when generating a new puzzle.
 
-* **Multiple Difficulty Levels**
+- **Solutions Included**
+  - Every generated Sudoku has a valid, computable solution.
+  - Solutions can be revealed on demand.
 
-  * Difficulties are defined by the number of prefilled cells.
-  * Easily switch between difficulty levels when generating a new puzzle.
+- **Print to PDF**
+  - Export any Sudoku to a clean, printable PDF.
+  - Ideal for offline solving or sharing physical copies.
 
-* **Solutions Included**
+- **Responsive, Modern UI**
+  - Fully responsive layout for desktop, tablet, and mobile.
+  - Styled with Tailwind CSS.
 
-  * Every generated Sudoku has a valid, computable solution.
-  * Solutions can be revealed on demand.
-
-* **Print to PDF**
-
-  * Export any Sudoku to a clean, printable PDF.
-  * Ideal for offline solving or sharing physical copies.
-
-* **Responsive, Modern UI**
-
-  * Fully responsive layout for desktop, tablet, and mobile.
-  * Styled with Tailwind CSS.
-
-* **Simple Settings**
-
-  * Quickly generate a new Sudoku.
-  * Adjust difficulty without leaving the page.
+- **Simple Settings**
+  - Quickly generate a new Sudoku.
+  - Adjust difficulty without leaving the page.
 
 ---
 
@@ -56,8 +50,8 @@ This makes puzzles reproducible, bookmarkable, and shareable.
 
 ### Prerequisites
 
-* Node.js (recommended: latest LTS)
-* **pnpm**
+- Node.js (recommended: latest LTS)
+- **pnpm**
 
 If you don’t have pnpm installed yet:
 
@@ -150,10 +144,10 @@ See [docker/DOCKER.md](docker/DOCKER.md) for configuration options.
 
 ## 🧩 Project Goals
 
-* Deterministic Sudoku generation via URL-based seeds
-* Clear separation between puzzle logic and UI
-* Strong test coverage for core logic
-* Clean, modern UI with minimal distractions
+- Deterministic Sudoku generation via URL-based seeds
+- Clear separation between puzzle logic and UI
+- Strong test coverage for core logic
+- Clean, modern UI with minimal distractions
 
 ---
 

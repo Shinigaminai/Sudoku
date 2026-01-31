@@ -14,9 +14,9 @@ The app will be available at `http://localhost:3000`.
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3000` | Port the server listens on |
+| Variable | Default                 | Description                               |
+| -------- | ----------------------- | ----------------------------------------- |
+| `PORT`   | `3000`                  | Port the server listens on                |
 | `ORIGIN` | `http://localhost:3000` | Required by SvelteKit for CSRF protection |
 
 ### Custom Origin

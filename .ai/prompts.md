@@ -13,16 +13,16 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Define **framework-agnostic TypeScript types** for:
 >
-> * Sudoku grid
-> * Cell (value, fixed/editable)
-> * Difficulty levels
-> * Generation options
+> - Sudoku grid
+> - Cell (value, fixed/editable)
+> - Difficulty levels
+> - Generation options
 >
 > Requirements:
 >
-> * No Svelte or browser-specific code
-> * Clear naming
-> * Easy to test
+> - No Svelte or browser-specific code
+> - Clear naming
+> - Easy to test
 >
 > Output only TypeScript code.
 
@@ -34,14 +34,14 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Requirements:
 >
-> * Same seed must always produce the same sequence
-> * No external dependencies
-> * Include unit tests using Vitest
+> - Same seed must always produce the same sequence
+> - No external dependencies
+> - Include unit tests using Vitest
 >
 > Output:
 >
-> * RNG implementation
-> * Corresponding test file
+> - RNG implementation
+> - Corresponding test file
 
 ---
 
@@ -53,16 +53,16 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Functions needed:
 >
-> * Validate a row
-> * Validate a column
-> * Validate a 3x3 box
-> * Validate a full grid
+> - Validate a row
+> - Validate a column
+> - Validate a 3x3 box
+> - Validate a full grid
 >
 > Requirements:
 >
-> * No UI or framework code
-> * Pure functions
-> * Include comprehensive unit tests
+> - No UI or framework code
+> - Pure functions
+> - Include comprehensive unit tests
 >
 > Output code and tests.
 
@@ -74,13 +74,12 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Requirements:
 >
-> * Always generate a valid completed Sudoku grid
-> * Deterministic output per seed
-> * No UI or framework dependencies
-> * Include unit tests that:
->
->   * Verify Sudoku validity
->   * Verify determinism for the same seed
+> - Always generate a valid completed Sudoku grid
+> - Deterministic output per seed
+> - No UI or framework dependencies
+> - Include unit tests that:
+>   - Verify Sudoku validity
+>   - Verify determinism for the same seed
 >
 > Output implementation and tests.
 
@@ -92,12 +91,11 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Requirements:
 >
-> * Difficulty defined by number of prefilled cells
-> * Resulting puzzle must:
->
->   * Be solvable
->   * Match the requested difficulty
-> * Include unit tests for each difficulty level
+> - Difficulty defined by number of prefilled cells
+> - Resulting puzzle must:
+>   - Be solvable
+>   - Match the requested difficulty
+> - Include unit tests for each difficulty level
 >
 > Output code and tests.
 
@@ -109,14 +107,14 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Use cases:
 >
-> * Verify puzzle solvability
-> * Produce a complete solution
+> - Verify puzzle solvability
+> - Produce a complete solution
 >
 > Requirements:
 >
-> * Deterministic behavior
-> * No UI or framework code
-> * Unit tests for correctness and edge cases
+> - Deterministic behavior
+> - No UI or framework code
+> - Unit tests for correctness and edge cases
 >
 > Output solver and tests.
 
@@ -130,9 +128,9 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Requirements:
 >
-> * URL contains seed and difficulty
-> * Parsing logic is isolated from UI
-> * Regenerating from URL always produces the same puzzle
+> - URL contains seed and difficulty
+> - Parsing logic is isolated from UI
+> - Regenerating from URL always produces the same puzzle
 >
 > Provide example routes and parsing code.
 
@@ -144,9 +142,9 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Requirements:
 >
-> * Puzzle generation must live outside Svelte components
-> * Components only consume prepared data
-> * Provide a suggested folder structure
+> - Puzzle generation must live outside Svelte components
+> - Components only consume prepared data
+> - Provide a suggested folder structure
 >
 > Output explanation and example code.
 
@@ -160,10 +158,10 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Requirements:
 >
-> * Uses Tailwind CSS
-> * Distinguishes fixed vs editable cells
-> * Supports keyboard input
-> * No puzzle logic inside the component
+> - Uses Tailwind CSS
+> - Distinguishes fixed vs editable cells
+> - Supports keyboard input
+> - No puzzle logic inside the component
 >
 > Output component code only.
 
@@ -173,15 +171,15 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 
 > Implement UI controls for:
 >
-> * Difficulty selection
-> * Generating a new Sudoku
-> * Showing/hiding the solution
+> - Difficulty selection
+> - Generating a new Sudoku
+> - Showing/hiding the solution
 >
 > Requirements:
 >
-> * Updates URL parameters
-> * Minimal, clean UI
-> * No direct puzzle logic in components
+> - Updates URL parameters
+> - Minimal, clean UI
+> - No direct puzzle logic in components
 >
 > Output Svelte component code.
 
@@ -193,9 +191,9 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Requirements:
 >
-> * Mobile-first
-> * Touch-friendly inputs
-> * No visual clutter
+> - Mobile-first
+> - Touch-friendly inputs
+> - No visual clutter
 >
 > Output Tailwind-based layout improvements.
 
@@ -209,9 +207,9 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Requirements:
 >
-> * Print-friendly layout
-> * Optional solution page
-> * Uses browser print capabilities
+> - Print-friendly layout
+> - Optional solution page
+> - Uses browser print capabilities
 >
 > Output CSS and minimal supporting code.
 
@@ -223,9 +221,9 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 >
 > Focus on:
 >
-> * Generator determinism
-> * Solver correctness
-> * Difficulty consistency
+> - Generator determinism
+> - Solver correctness
+> - Difficulty consistency
 >
 > Add regression tests for known seeds.
 
@@ -235,9 +233,9 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 
 > Help write project documentation explaining:
 >
-> * Deterministic Sudoku generation
-> * URL-based seeds
-> * Project architecture and design decisions
+> - Deterministic Sudoku generation
+> - URL-based seeds
+> - Project architecture and design decisions
 >
 > Output Markdown suitable for README or docs.
 
@@ -247,7 +245,7 @@ Each prompt is scoped to a single task and emphasizes determinism, testability, 
 
 Always remind the AI:
 
-* Keep logic framework-agnostic
-* Prefer pure functions
-* Write tests alongside logic
-* Determinism is non-negotiable
+- Keep logic framework-agnostic
+- Prefer pure functions
+- Write tests alongside logic
+- Determinism is non-negotiable
