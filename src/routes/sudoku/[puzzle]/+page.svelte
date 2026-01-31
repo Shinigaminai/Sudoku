@@ -18,26 +18,33 @@
 		showSolution = !showSolution;
 	};
 
+	const copyToClipboard = async (url: string) => {
+		try {
+			await navigator.clipboard.writeText(url);
+			alert('Link copied to clipboard!');
+		} catch (err) {
+			console.error('Clipboard copy failed:', err);
+			alert('Failed to copy link');
+		}
+	};
+
 	const handleShareClicked = async () => {
 		const shareUrl = window.location.href;
 
-		// If Web Share API is available (mostly mobile)
 		if (navigator.share) {
-			navigator
-				.share({
+			try {
+				await navigator.share({
 					title: document.title,
 					url: shareUrl
-				})
-				.catch(() => {});
-			console.log('opening system share menu');
-		} else {
-			navigator.clipboard
-				.writeText(shareUrl)
-				.then(() => alert('Link copied to clipboard!'))
-				.catch((err) => {
-					console.error('Clipboard copy failed:', err);
-					alert('Failed to copy link');
 				});
+			} catch (err) {
+				// User cancelled or share failed - fall back to clipboard
+				if ((err as Error).name !== 'AbortError') {
+					await copyToClipboard(shareUrl);
+				}
+			}
+		} else {
+			await copyToClipboard(shareUrl);
 		}
 	};
 </script>
