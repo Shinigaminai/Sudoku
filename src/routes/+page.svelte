@@ -23,10 +23,10 @@
 	let difficulty: Difficulty = $state('easy');
 </script>
 
-<div class="mt-12 flex flex-col items-center space-y-6">
+<div class="mt-12 flex flex-col items-center space-y-10 px-6">
 	<h1 class="text-3xl font-bold">Sudoku Generator</h1>
 
-	<div class="grid grid-cols-2 items-baseline gap-4">
+	<div class="grid grid-cols-2 items-baseline gap-x-2 gap-y-4">
 		<label>
 			<div class="label-settings">Difficulty:</div>
 			<ArrowSelect
