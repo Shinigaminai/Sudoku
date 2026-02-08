@@ -4,6 +4,7 @@
 	import { createPuzzle, encodePuzzle, generateSolvedGrid } from '$lib/sudoku/';
 	import type { Difficulty } from '$lib/sudoku/types/sudoku';
 	import ArrowSelect from '$lib/ui/components/ArrowSelect.svelte';
+	import { t } from 'svelte-i18n';
 
 	let seed = $state(Math.floor(Math.random() * 1000));
 
@@ -15,10 +16,10 @@
 	}
 
 	const difficulties = [
-		{ label: 'Easy', value: 'easy' },
-		{ label: 'Medium', value: 'medium' },
-		{ label: 'Hard', value: 'hard' },
-		{ label: 'Expert', value: 'expert' }
+		{ label: $t('easy'), value: 'easy' },
+		{ label: $t('medium'), value: 'medium' },
+		{ label: $t('hard'), value: 'hard' },
+		{ label: $t('expert'), value: 'expert' }
 	];
 
 	let difficulty: Difficulty = $state('easy');

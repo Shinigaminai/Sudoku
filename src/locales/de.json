@@ -1,0 +1,8 @@
+{
+    "difficulty": {
+        "easy": "Einfach",
+        "medium": "Medium",
+        "hard": "Schwer",
+        "expert": "Experte"
+    }
+}
